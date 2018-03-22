@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -115,6 +116,55 @@ public class DAO {
 		}
 
 		return result;
+	}
+        
+        /**
+	 * requête qui récupère les commandes d'un client
+	 *
+	 * @param customerID la clé du CUSTOMER dont on veut les commandes
+	 * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si pas trouvé
+	 * @throws DAOException
+	 */
+	public List<PurchaseEntity> viewPurshases(int customerID) throws DAOException {
+		ArrayList<PurchaseEntity> purchases = new ArrayList();
+
+		String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID = ?";
+		try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+			PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+			stmt.setInt(1, customerID);
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) { // On a trouvé
+                                    
+                                        PurchaseEntity result = new PurchaseEntity();
+                                    
+					int OrderNum = rs.getInt("ORDER_NUM");
+					int CustomerId = rs.getInt("CUSTOMER_ID");
+                                        int ProductId = rs.getInt("PRODUCT_ID");
+                                        int Quantity = rs.getInt("QUANTITY");
+                                        float ShippingCost = rs.getFloat("SHIPPING_COST");
+                                        String SalesDate = rs.getString("SALES_DATE");
+                                        String ShippingDate = rs.getString("SHIPPING_DATE");
+                                        String FreightCompany = rs.getString("FREIGHT_COMPANY");
+					// On crée l'objet "entity"
+					result.setOrderNum(OrderNum);
+                                        result.setCustomerId(CustomerId);
+                                        result.setProductId(ProductId);
+                                        result.setQuantity(Quantity);
+                                        result.setShippingCost(ShippingCost);
+                                        result.setSalesDate(SalesDate);
+                                        result.setShippingDate(ShippingDate);
+                                        result.setFreightCompany(FreightCompany); 
+                                        
+                                        purchases.add(result);
+				} // else on n'a pas trouvé, on renverra null
+			}
+		}  catch (SQLException ex) {
+			Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+			throw new DAOException(ex.getMessage());
+		}
+
+		return purchases;
 	}
 
 
