@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\model\DataSourceFactory.java
 C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\filters\ProtectedPagesFilter.java
 C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\controller\LoginController.java
@@ -7,3 +8,13 @@ C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\listeners\Co
 C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\model\DAOException.java
 C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\model\DiscountCode.java
 C:\Users\tzanchi\Documents\NetBeansProjects\ProjetJsp\src\main\java\model\DAO.java
+=======
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\listeners\CountingUsers.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\model\DAOException.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\controller\LoginController.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\model\DAO.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\model\DataSourceFactory.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\model\DiscountCode.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\filters\ProtectedPagesFilter.java
+C:\Users\mcommero\Desktop\projetJsp\ProjetJsp\src\main\java\model\CustomerEntity.java
+>>>>>>> 470c7ac8c1b385a97b88393c8d01a64bc61443ef
