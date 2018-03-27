@@ -17,21 +17,25 @@
             <param-value>Mr. Super-User</param-value>
         </init-param>
     </servlet>
-    
+    <servlet>
+        <servlet-name>CustomerController</servlet-name>
+        <servlet-class>controller.CustomerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/LoginController</url-pattern>
     </servlet-mapping>
-    
-    
     <!-- Contrôle le temps au bout duquel une session inactive est détruite automatiquement -->
+    <servlet-mapping>
+        <servlet-name>CustomerController</servlet-name>
+        <url-pattern>/CustomerController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <!-- Un temps volontairement court : 1 minute -->
         <session-timeout>
             1
         </session-timeout>
     </session-config>
-    
     <welcome-file-list>
         <welcome-file>LoginController</welcome-file>
     </welcome-file-list>

@@ -8,19 +8,35 @@
 --%>
 
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>You are connected</title>
-	</head>
-	<body>
-		<h1>Bienvenue ${userName}</h1>
-		Vous avez maintenant accès aux fichiers dans le répertoire 
-		"<a href="<c:url value="protected/protectedPage2.html"/>">protected</a>".<br>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>You are connected</title>
+    </head>
+    <body>
+        <h1>Bienvenue ${userName}</h1>
+        Vous avez maintenant accès aux fichiers dans le répertoire 
+        "<a href="<c:url value="protected/protectedPage2.html"/>">protected</a>".<br>
 
-		<form action="<c:url value="/"/>" method="POST"> 
-			<input type='submit' name='action' value='logout'>
-		</form>
-		<hr/>
-		<h3>Il y a actuellement ${applicationScope.numberConnected} utilisateurs connectés</h3>
-	</body>
+        <form action="<c:url value="/"/>" method="POST"> 
+            <input type='submit' name='action' value='logout'>
+        </form>
+        <hr/>
+        <h3>Il y a actuellement ${applicationScope.numberConnected} utilisateurs connectés</h3>
+        <table>
+            <tr>
+                <th>OrderNum</th>
+                <th>productId</th> 
+                <th>shippingCost</th>
+            </tr>
+            
+            <c:forEach items="${ purchases }" var="purchase" varStatus="status">
+            <tr>
+                <td>${purchase.orderNum}</td>
+                <td>${purchase.productId}</td> 
+                <td>${purchase.shippingCost}</td>
+            </tr>
+
+            </c:forEach>
+        </table>
+    </body>
 </html>

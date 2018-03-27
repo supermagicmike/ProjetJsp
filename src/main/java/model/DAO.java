@@ -138,7 +138,7 @@ public class DAO {
 
             stmt.setInt(1, customerID);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) { // On a trouvé
+                while (rs.next()) { // On a trouvé
 
                     PurchaseEntity result = new PurchaseEntity();
 
