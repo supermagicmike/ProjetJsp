@@ -15,6 +15,7 @@ public class PurchaseEntity {
     private String salesDate;
     private String shippingDate;
     private String freightCompany;
+    private String description;
 
     public PurchaseEntity() {
 
@@ -84,4 +85,11 @@ public class PurchaseEntity {
         return freightCompany;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

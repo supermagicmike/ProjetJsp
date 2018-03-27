@@ -132,7 +132,7 @@ public class DAO {
     public List<PurchaseEntity> viewPurshases(int customerID) throws DAOException {
         ArrayList<PurchaseEntity> purchases = new ArrayList();
 
-        String sql = "SELECT * FROM PURCHASE_ORDER WHERE CUSTOMER_ID = ?";
+        String sql = "SELECT * FROM PURCHASE_ORDER INNER JOIN PRODUCT USING(PRODUCT_ID) WHERE CUSTOMER_ID = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -150,6 +150,7 @@ public class DAO {
                     String SalesDate = rs.getString("SALES_DATE");
                     String ShippingDate = rs.getString("SHIPPING_DATE");
                     String FreightCompany = rs.getString("FREIGHT_COMPANY");
+                    String Description = rs.getString("DESCRIPTION");
                     // On crée l'objet "entity"
                     result.setOrderNum(OrderNum);
                     result.setCustomerId(CustomerId);
@@ -159,6 +160,7 @@ public class DAO {
                     result.setSalesDate(SalesDate);
                     result.setShippingDate(ShippingDate);
                     result.setFreightCompany(FreightCompany);
+                    result.setDescription(Description);
 
                     purchases.add(result);
                 } // else on n'a pas trouvé, on renverra null

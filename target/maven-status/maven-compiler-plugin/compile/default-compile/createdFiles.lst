@@ -1,9 +1,9 @@
 listeners\CountingUsers.class
-model\DataSourceFactory.class
-controller\LoginController.class
 filters\ProtectedPagesFilter.class
 model\DAOException.class
-model\CustomerEntity.class
 model\DiscountCode.class
-model\DataSourceFactory$DriverType.class
 model\DataSourceFactory$1.class
+model\DataSourceFactory.class
+controller\LoginController.class
+model\CustomerEntity.class
+model\DataSourceFactory$DriverType.class
