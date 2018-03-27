@@ -49,9 +49,9 @@ public class LoginController extends HttpServlet {
 		} else { // L'utilisateur est connecté
 			// On choisit la page d'affichage
                         if(userName.equals("Mr. Super-User")){
-                            jspView="afficheAdmin.jsp";
+                            jspView="WEB-INF/afficheAdmin.jsp";
                         }else{
-			jspView = "affiche.jsp";
+			jspView = "WEB-INF/affiche.jsp";
                         }
 		}
 		// On va vers la page choisie
