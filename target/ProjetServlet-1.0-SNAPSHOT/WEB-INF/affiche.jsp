@@ -29,9 +29,8 @@
                 <td>${purchase.orderNum}</td>
                 <td>${purchase.productId}</td> 
                 <td>${purchase.shippingCost}</td>
-                <td><a href="?action=DELETE&code=${record.orderNum}">delete</a></td>
+                <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>
             </tr>
-
             </c:forEach>
             
         </table>

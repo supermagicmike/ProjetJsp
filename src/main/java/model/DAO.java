@@ -210,7 +210,7 @@ public class DAO {
     
     public int deletePurchase(int code) throws SQLException {
 		int result = 0;
-		String sql = "DELETE FROM PURCHASE_CODE WHERE DISCOUNT_CODE = ?";
+		String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM = ?";
 		try (Connection connection = myDataSource.getConnection(); 
 		     PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, code);

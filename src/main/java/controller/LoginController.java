@@ -34,8 +34,8 @@ public class LoginController extends HttpServlet {
 			switch (action) {
 				case "login":
 					checkLogin(request);
-                                        List<PurchaseEntity> purchase = customer.viewPurshases(1);
-                                        request.setAttribute("purchases", purchase);
+
+                                        
 					break;
 				case "logout":
 					doLogout(request);
@@ -132,6 +132,8 @@ public class LoginController extends HttpServlet {
 			// On stocke l'information dans la session
 			HttpSession session = request.getSession(true); // démarre la session
 			session.setAttribute("userName", userName);
+
+                        
                         
                          
 		}
@@ -142,6 +144,10 @@ public class LoginController extends HttpServlet {
                     if(cust.getEmail().equals(loginParam)){
                     HttpSession session = request.getSession(true); // démarre la session
 			session.setAttribute("userName", cust.getName());
+                        session.setAttribute("Id", cust.getCustomerId());
+                        List<PurchaseEntity> purchase = customer.viewPurshases(cust.getCustomerId());
+                        request.setAttribute("purchases", purchase);
+                        
                 }}
                 else { // On positionne un message d'erreur pour l'afficher dans la JSP
 			request.setAttribute("errorMessage", "Login/Password incorrect");

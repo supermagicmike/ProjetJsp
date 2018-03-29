@@ -26,8 +26,6 @@ import model.PurchaseEntity;
 public class CustomerController extends HttpServlet
 {
 
-
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,42 +38,37 @@ public class CustomerController extends HttpServlet
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
-    {    
+    {
         try
         {
             DAO dao = new DAO();
-            List<PurchaseEntity> purchase = dao.viewPurshases(1);
-            request.setAttribute("purchases", purchase);
+            request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
             String action = request.getParameter("action");
-            String code=request.getParameter("code");
-            switch (action) {
-				case "DELETE":
+            String code = request.getParameter("code");
+            switch (action)
             {
-                try
+                case "DELETE":
                 {
-                    // Requête de suppression (vient du lien hypertexte)
-                    dao.deletePurchase(Integer.valueOf(code));
-                    request.setAttribute("message", "Code " + code + " Supprimé");
-                    request.setAttribute("purchases", dao.viewPurshases(1));
+                    try
+                    {
+                        // Requête de suppression (vient du lien hypertexte)
+                        dao.deletePurchase(Integer.valueOf(code));
+                       }
+                    catch (SQLException ex)
+                    {
+                        Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
                 }
-                catch (SQLException ex)
-                {
-                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
             }
-																						
-
-
-			}
         }
         catch (DAOException ex)
         {
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-      
-
-getServletContext().getRequestDispatcher("WEB-INF/affiche.jsp").forward(request,response);
+        getServletContext().getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
