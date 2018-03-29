@@ -4,12 +4,5 @@ C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\CustomerEntity.j
 C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\PurchaseEntity.java
 C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\controller\CustomerController.java
 C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\DAOException.java
-<<<<<<< HEAD
 C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\DataSourceFactory.java
 C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\DiscountCode.java
-=======
-C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\filters\ProtectedPagesFilter.java
-C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\DataSourceFactory.java
-C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\model\DiscountCode.java
-C:\Users\tzanchi\Documents\GitHub\ProjetJsp\src\main\java\listeners\CountingUsers.java
->>>>>>> Théo

@@ -89,16 +89,6 @@ public class CustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-=======
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
->>>>>>> Théo
         processRequest(request, response);
     }
 
@@ -116,16 +106,6 @@ public class CustomerController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-=======
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
->>>>>>> Théo
         processRequest(request, response);
     }
 
@@ -135,12 +115,8 @@ public class CustomerController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-<<<<<<< HEAD
     public String getServletInfo()
     {
-=======
-    public String getServletInfo() {
->>>>>>> Théo
         return "Short description";
     }// </editor-fold>
 
