@@ -32,6 +32,13 @@
                 <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>
             </tr>
             </c:forEach>
+            <tr>
+                <form method="post" action="traitement.php">
+                    <td><input type="text" name="OrderNum" /></td>
+                    <td><input type="text" name="prodductId" /></td>
+                    <td><input type="text" name="shippingCost" /></td>
+                </form>
+            </tr>
         </table>
     </body>
 </html>

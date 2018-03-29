@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 model\DataSourceFactory.class
 controller\LoginController.class
 model\DAOException.class
@@ -7,4 +8,14 @@ controller\CustomerController.class
 model\DiscountCode.class
 model\DataSourceFactory$DriverType.class
 model\DAO.class
+=======
+listeners\CountingUsers.class
+filters\ProtectedPagesFilter.class
+model\DAOException.class
+model\DiscountCode.class
+>>>>>>> Théo
 model\DataSourceFactory$1.class
+model\DataSourceFactory.class
+controller\LoginController.class
+model\CustomerEntity.class
+model\DataSourceFactory$DriverType.class
