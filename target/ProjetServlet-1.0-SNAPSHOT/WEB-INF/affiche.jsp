@@ -32,7 +32,6 @@
                 <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>
             </tr>
             </c:forEach>
-            
         </table>
     </body>
 </html>
