@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import model.CustomerEntity;
 import model.DAO;
 import model.DAOException;
+import model.PurchaseEntity;
 
 public class LoginController extends HttpServlet {
 
@@ -27,10 +29,13 @@ public class LoginController extends HttpServlet {
 		throws ServletException, IOException, DAOException {
 		// Quelle action a appelé cette servlet ?
 		String action = request.getParameter("action");
+                DAO customer = new DAO();
 		if (null != action) {
 			switch (action) {
 				case "login":
 					checkLogin(request);
+
+                                        
 					break;
 				case "logout":
 					doLogout(request);
@@ -49,9 +54,9 @@ public class LoginController extends HttpServlet {
 		} else { // L'utilisateur est connecté
 			// On choisit la page d'affichage
                         if(userName.equals("Mr. Super-User")){
-                            jspView="afficheAdmin.jsp";
+                            jspView="WEB-INF/afficheAdmin.jsp";
                         }else{
-			jspView = "affiche.jsp";
+			jspView = "WEB-INF/affiche.jsp";
                         }
 		}
 		// On va vers la page choisie
@@ -127,6 +132,10 @@ public class LoginController extends HttpServlet {
 			// On stocke l'information dans la session
 			HttpSession session = request.getSession(true); // démarre la session
 			session.setAttribute("userName", userName);
+
+                        
+                        
+                         
 		}
                 try{
                 cust = customer.findCustomer(Integer.valueOf(passwordParam));
@@ -135,6 +144,10 @@ public class LoginController extends HttpServlet {
                     if(cust.getEmail().equals(loginParam)){
                     HttpSession session = request.getSession(true); // démarre la session
 			session.setAttribute("userName", cust.getName());
+                        session.setAttribute("Id", cust.getCustomerId());
+                        List<PurchaseEntity> purchase = customer.viewPurshases(cust.getCustomerId());
+                        request.setAttribute("purchases", purchase);
+                        
                 }}
                 else { // On positionne un message d'erreur pour l'afficher dans la JSP
 			request.setAttribute("errorMessage", "Login/Password incorrect");

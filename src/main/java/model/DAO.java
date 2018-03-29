@@ -138,7 +138,7 @@ public class DAO {
 
             stmt.setInt(1, customerID);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) { // On a trouvé
+                while (rs.next()) { // On a trouvé
 
                     PurchaseEntity result = new PurchaseEntity();
 
@@ -170,6 +170,16 @@ public class DAO {
 
         return purchases;
     }
+    
+    
+     /**
+     * requête qui récupère les commandes d'un client
+     *
+     * @param customerID la clé du CUSTOMER dont on veut les commandes
+     * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
+     * pas trouvé
+     * @throws DAOException
+     */
 
     public int createPurshase(int orderNum, int customerId, int productId, int quantity, float shippingCost, String salesDate, String shippingDate, String freightCompany) throws SQLException {
         int result = 0;
@@ -190,5 +200,24 @@ public class DAO {
         }
         return result;
     }
+    
+    	/**
+	 * Supprime un enregistrement dans la table PURCHASE_ORDER
+	 * @param code la clé de l'enregistrement à supprimer
+	 * @return le nombre d'enregistrements supprimés (1 ou 0)
+	 * @throws java.sql.SQLException renvoyées par JDBC
+	 **/
+    
+    public int deletePurchase(int code) throws SQLException {
+		int result = 0;
+		String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM = ?";
+		try (Connection connection = myDataSource.getConnection(); 
+		     PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, code);
+			result = stmt.executeUpdate();
+		}
+		return result;
+	}
+    
 
 }
