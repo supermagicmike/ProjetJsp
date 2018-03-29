@@ -6,12 +6,17 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.DAO;
+import model.DAOException;
 import model.PurchaseEntity;
 
 /**
@@ -20,6 +25,8 @@ import model.PurchaseEntity;
  */
 public class CustomerController extends HttpServlet
 {
+
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,21 +40,42 @@ public class CustomerController extends HttpServlet
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
-    {
-        response.setContentType("text/html;charset=UTF-8");
-        DAO purchase = new DAO();
-       
-        
-        try 
+    {    
+        try
         {
-            List<PurchaseEntity> purchases = purchase.viewPurshases(1);
-            request.setAttribute("purchases", purchases);
-            
-            this.getServletContext().getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
-            
-        }catch (Exception ex){
-            
+            DAO dao = new DAO();
+            List<PurchaseEntity> purchase = dao.viewPurshases(1);
+            request.setAttribute("purchases", purchase);
+            String action = request.getParameter("action");
+            String code=request.getParameter("code");
+            switch (action) {
+				case "DELETE":
+            {
+                try
+                {
+                    // Requête de suppression (vient du lien hypertexte)
+                    dao.deletePurchase(Integer.valueOf(code));
+                    request.setAttribute("message", "Code " + code + " Supprimé");
+                    request.setAttribute("purchases", dao.viewPurshases(1));
+                }
+                catch (SQLException ex)
+                {
+                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+																						
+
+
+			}
         }
+        catch (DAOException ex)
+        {
+            Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+      
+
+getServletContext().getRequestDispatcher("WEB-INF/affiche.jsp").forward(request,response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

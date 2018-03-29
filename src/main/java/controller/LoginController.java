@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import model.CustomerEntity;
 import model.DAO;
 import model.DAOException;
+import model.PurchaseEntity;
 
 public class LoginController extends HttpServlet {
 
@@ -27,10 +29,13 @@ public class LoginController extends HttpServlet {
 		throws ServletException, IOException, DAOException {
 		// Quelle action a appelé cette servlet ?
 		String action = request.getParameter("action");
+                DAO customer = new DAO();
 		if (null != action) {
 			switch (action) {
 				case "login":
 					checkLogin(request);
+                                        List<PurchaseEntity> purchase = customer.viewPurshases(1);
+                                        request.setAttribute("purchases", purchase);
 					break;
 				case "logout":
 					doLogout(request);
@@ -127,6 +132,8 @@ public class LoginController extends HttpServlet {
 			// On stocke l'information dans la session
 			HttpSession session = request.getSession(true); // démarre la session
 			session.setAttribute("userName", userName);
+                        
+                         
 		}
                 try{
                 cust = customer.findCustomer(Integer.valueOf(passwordParam));
