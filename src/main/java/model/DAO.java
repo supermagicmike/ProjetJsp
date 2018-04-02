@@ -221,5 +221,39 @@ public class DAO {
 		return result;
 	}
     
+    /**
+     * Trouver un chiffre affaire par article par date
+     *
+     * @param customerID la clé du CUSTOMER à rechercher
+     * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
+     * pas trouvé
+     * @throws DAOException
+     */
+    public int chiffreAffaireArticle(String dateDeb, String dateFin, String categorie) throws DAOException {
+        CustomerEntity result = new CustomerEntity();
+
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where sales_date between ? and ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, categorie);
+            stmt.setString(2, dateDeb);
+            stmt.setString(3, dateFin);
+            float prix =0;
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
+                    prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return 1;
+    }
+    
+    
+    
 
 }
