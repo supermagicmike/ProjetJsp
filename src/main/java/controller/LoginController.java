@@ -15,6 +15,7 @@ import model.DAOException;
 import model.PurchaseEntity;
 
 public class LoginController extends HttpServlet {
+    private final static Logger log = Logger.getLogger(LoginController.class.getName());
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -138,6 +139,8 @@ public class LoginController extends HttpServlet {
                          
 		}
                 try{
+                log.info("password param : "+passwordParam);
+                
                 cust = customer.findCustomer(Integer.valueOf(passwordParam));
                 
                 if(cust!=null){
