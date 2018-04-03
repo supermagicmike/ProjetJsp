@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -133,6 +135,13 @@ public class LoginController extends HttpServlet {
 			// On stocke l'information dans la session
 			HttpSession session = request.getSession(true); // démarre la session
 			session.setAttribute("userName", userName);
+                        Map<String,Float> hm = new HashMap<>();
+                        List<String> productCodes = customer.productCodes();
+                        for(String s: productCodes){
+                            hm.put(s, customer.chiffreAffaireProduit(s));
+                            
+                        }
+                        request.setAttribute("affaires", hm);
 
                         
                         

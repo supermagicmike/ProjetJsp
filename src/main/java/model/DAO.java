@@ -229,17 +229,16 @@ public class DAO {
      * pas trouvé
      * @throws DAOException
      */
-    public int chiffreAffaireArticle(String dateDeb, String dateFin, String categorie) throws DAOException {
-        CustomerEntity result = new CustomerEntity();
+    public float chiffreAffaireDate(String dateDeb, String dateFin) throws DAOException {
+        float prix =0;
 
         String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setString(1, categorie);
-            stmt.setString(2, dateDeb);
-            stmt.setString(3, dateFin);
-            float prix =0;
+            stmt.setString(1, dateDeb);
+            stmt.setString(2, dateFin);
+            
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) { // On a trouvé
                     prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
@@ -250,10 +249,63 @@ public class DAO {
             throw new DAOException(ex.getMessage());
         }
 
-        return 1;
+        return prix;
     }
     
+    /**
+     * Trouver un chiffre affaire par article par date
+     *
+     * @param customerID la clé du CUSTOMER à rechercher
+     * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
+     * pas trouvé
+     * @throws DAOException
+     */
+    public float chiffreAffaireProduit(String categorie) throws DAOException {
+        float prix =0;
+
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where product_code = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, categorie);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
+                    prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return prix;
+    }
     
+     public float chiffreAffaireClientDate(int iD,String dateDeb, String dateFin) throws DAOException {
+        CustomerEntity result = new CustomerEntity();
+        float prix =0;
+
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer using(discount_code) where customer_id = ? and sales_date between ? and ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, iD);
+            stmt.setString(2, dateDeb);
+            stmt.setString(3, dateFin);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
+                    prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return prix;
+    }
     
 
 }
