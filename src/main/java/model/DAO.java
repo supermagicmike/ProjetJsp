@@ -306,6 +306,21 @@ public class DAO {
 
         return prix;
     }
+     public List<String> productCodes() throws SQLException {
+
+        List<String> result = new ArrayList<>();
+
+        String sql = "SELECT * FROM PRODUCT_CODE";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String res  = rs.getString("PROD_CODE");
+                result.add(res);
+            }
+        }
+        return result;
+    }
     
 
 }

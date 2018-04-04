@@ -8,6 +8,9 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -41,14 +44,16 @@ public class AdminController extends HttpServlet
         {
             DAO dao = new DAO();
             String action= request.getParameter("action");
-            request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
-            /*switch(action){
-                case("DATE"){
-                    
+            switch(action){
+                case "DATE":{
+                   String deb= request.getParameter("dateDeb");
+                   String fin= request.getParameter("dateFin");            
+                   float CA= dao.chiffreAffaireDate(deb, fin);
+                   request.setAttribute("CA", CA);
                 }
-                case("Custo")
+                case "Custo":
                 
-            }*/
+            }
 
 
         }
