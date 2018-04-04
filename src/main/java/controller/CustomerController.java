@@ -44,8 +44,7 @@ public class CustomerController extends HttpServlet {
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
         String code = request.getParameter("code");
-        String OrderNum = request.getParameter("OrderNum");
-        String ProdductId = request.getParameter("ProddcutId");
+        String Description = request.getParameter("Description");
         String ShippingCost = request.getParameter("ShippingCost");  
         String Quantity = request.getParameter("Quantity"); 
         String freightCompany = request.getParameter("freightCompany");
@@ -71,7 +70,7 @@ public class CustomerController extends HttpServlet {
                 }
                 case "ADD":
                     try {
-                        dao.createPurshase((Integer)request.getSession().getAttribute("Id"), Integer.parseInt(ProdductId), Integer.parseInt(Quantity), Float.valueOf(ShippingCost), freightCompany);
+                        dao.createPurshase((Integer)request.getSession().getAttribute("Id"), dao.findProductId(Description), Integer.parseInt(Quantity), Float.valueOf(ShippingCost), freightCompany);
                         request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
                         request.getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
                     } catch (SQLException ex) {

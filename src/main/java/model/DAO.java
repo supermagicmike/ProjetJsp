@@ -123,6 +123,26 @@ public class DAO {
 
         return result;
     }
+    
+    public int findProductId(String Description) throws DAOException {
+        
+        int result = 0;
+        
+        String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, Description);
+            try (ResultSet rs = stmt.executeQuery()) {               
+                    result = rs.getInt("PRODUCT_ID");                  
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return result;
+    }
 
     /**
      * requête qui récupère les commandes d'un client
