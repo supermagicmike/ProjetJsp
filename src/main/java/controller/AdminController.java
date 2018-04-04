@@ -61,7 +61,7 @@ public class AdminController extends HttpServlet {
                         for (CustomerEntity c :customers) {
                             hm.put(c.getName(), dao.chiffreAffaireClientDate(c.getCustomerId(), deb, fin));
                         }
-                        request.setAttribute("affaires", hm);
+                        request.setAttribute("CAClient", hm);
 
 
             }

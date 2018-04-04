@@ -48,19 +48,19 @@
             <form method="post" action="<c:url value="AdminController"/>">
                 <p>
                     <!-- une balise select ou input ne peut pas être imbriquée directement dans form -->
-                    <select name="code_produit">
-                        <c:forEach items="${ affaires }" var="affaire" varStatus="status">
-                            <option value="${affaire.key}">${affaire.key}</option>                         
-                        </c:forEach>
+                    <input type="text" name="Deb"/>
+                    <input type="text" name="Fin"/>
 
-                    </select>
-                    <input type="text" name="dateDeb"/>
-                    <input type="text" name="dateFin"/>
-
-                    <input type="submit" name="action" value="DATE"/>
+                    <input type="submit" name="action" value="CUSTO"/>
 
                 </p>
             </form>
+                <c:forEach items="${ CAClient }" var="ca" varStatus="status">
+                <tr>
+                    <td>${ca.key}</td>
+                    <td>${ca.value}</td>
+                </tr>
+            </c:forEach>
 
        
     </body>
