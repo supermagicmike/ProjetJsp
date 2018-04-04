@@ -19,25 +19,39 @@
         </form>
         <table>
             <tr>
-                <th>OrderNum</th>
-                <th>productId</th> 
-                <th>shippingCost</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Freight Company</th>
+                <th>Order Num</th>
+                <th>Product Id</th> 
+                <th>Sales Date</th>
+                <th>Shipping Date</th>                
+                <th>Shipping Cost</th>
+                <th>Total Price</th>
             </tr>
             
             <c:forEach items="${ purchases }" var="purchase" varStatus="status">
             <tr>
-                <td>${purchase.orderNum}</td>
-                <td>${purchase.productId}</td> 
+                <td>${purchase.description}</td>
+                <td>${purchase.quantity}</td>
+                <td>${purchase.freightCompany}</td>
+                <td>${purchase.orderNum}</td>                
+                <td>${purchase.productId}</td>                
+                <td>${purchase.salesDate}</td>
+                <td>${purchase.shippingDate}</td>               
                 <td>${purchase.shippingCost}</td>
+                <td>${purchase.totalCost}</td>
                 <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>
             </tr>
             </c:forEach>
             <tr>
-                <form method='GET'>
+                <form method='GET' action="<c:url value="CustomerController" />">
                     <td><input type="text" name="OrderNum"/></td>
                     <td><input type="text" name="ProdductId"/></td>
                     <td><input type="text" name="ShippingCost"/></td>
-                    <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit"></td>
+                    <td><input type="text" name="Quantity"/></td>
+                    <td><input type="text" name="freightCompany"/></td>
+                    <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="test"></td>
                 </form>
             </tr>
         </table>

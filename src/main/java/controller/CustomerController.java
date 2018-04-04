@@ -39,14 +39,16 @@ public class CustomerController extends HttpServlet {
      * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException
+            throws ServletException, IOException
     {
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
         String code = request.getParameter("code");
         String OrderNum = request.getParameter("OrderNum");
         String ProdductId = request.getParameter("ProddcutId");
-        String ShippingCost = request.getParameter("ShippingCost");       
+        String ShippingCost = request.getParameter("ShippingCost");  
+        String Quantity = request.getParameter("Quantity"); 
+        String freightCompany = request.getParameter("freightCompany");
         try
         {
             DAO dao = new DAO();
@@ -68,8 +70,14 @@ public class CustomerController extends HttpServlet {
                     break;
                 }
                 case "ADD":
-                    dao.createPurshase(Integer.parseInt(OrderNum), (Integer)request.getSession().getAttribute("Id"), Integer.parseInt(ProdductId), 1, Float.valueOf(ShippingCost), null, null, null);
-                    request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
+                    try {
+                        dao.createPurshase((Integer)request.getSession().getAttribute("Id"), Integer.parseInt(ProdductId), Integer.parseInt(Quantity), Float.valueOf(ShippingCost), freightCompany);
+                        request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
+                        request.getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
                     break;
             }
         }

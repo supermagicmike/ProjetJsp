@@ -3,7 +3,6 @@ controller\LoginController.class
 model\DAOException.class
 model\PurchaseEntity.class
 model\CustomerEntity.class
-controller\CustomerController.class
 model\DiscountCode.class
 model\DataSourceFactory$DriverType.class
 model\DAO.class

@@ -16,6 +16,7 @@ public class PurchaseEntity {
     private String shippingDate;
     private String freightCompany;
     private String description;
+    private float totalCost;
 
     public PurchaseEntity() {
 
@@ -91,5 +92,13 @@ public class PurchaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public float getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(float totalCost) {
+        this.totalCost = totalCost;
     }
 }
