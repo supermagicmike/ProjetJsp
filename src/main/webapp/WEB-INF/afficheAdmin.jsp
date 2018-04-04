@@ -36,8 +36,19 @@
 
             <form method="post" action="<c:url value="AdminController"/>">
                 <p>
+                    <input type="text" name="dateDeb"/>
+                    <input type="text" name="dateFin"/>
+
+                    <input type="submit" name="action" value="DATE"/>
+
+                </p>
+            </form>
+                <p>Chiffre affaire par année : ${ CA }</p>
+                
+            <form method="post" action="<c:url value="AdminController"/>">
+                <p>
                     <!-- une balise select ou input ne peut pas être imbriquée directement dans form -->
-                    <select name="menu_destination">
+                    <select name="code_produit">
                         <c:forEach items="${ affaires }" var="affaire" varStatus="status">
                             <option value="${affaire.key}">${affaire.key}</option>                         
                         </c:forEach>
@@ -46,13 +57,10 @@
                     <input type="text" name="dateDeb"/>
                     <input type="text" name="dateFin"/>
 
-                    <input type="submit" value="date"/>
+                    <input type="submit" name="action" value="DATE"/>
 
                 </p>
             </form>
-                <c:forEach items="${ affairesDate }" var="affaire" varStatus="status">
-                            <option value="${affaire.key}">${affaire.key}</option>                         
-                </c:forEach>
 
        
     </body>
