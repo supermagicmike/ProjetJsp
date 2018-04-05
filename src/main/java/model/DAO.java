@@ -252,4 +252,21 @@ public class DAO {
 	}
     
 
+    public ArrayList<String> GetProductsDescriptions() throws DAOException {
+
+        ArrayList<String> DescriptionList = new ArrayList();
+
+        String sql = "SELECT DESCRITPION FROM PRODUCT";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String Descritpion = rs.getString("DESCRIPTION");                
+                DescriptionList.add(Descritpion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return DescriptionList;
+    }
 }

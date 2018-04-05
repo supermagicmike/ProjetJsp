@@ -46,7 +46,11 @@
             </c:forEach>
             <tr>
                 <form method='GET' action="<c:url value="CustomerController" />">
-                    <td><input type="text" name="Description"/></td>
+                    <select name="Description">
+                        <c:forEach items="${ Descritpions }" var="Descritpions" varStatus="status">
+                            <option value="${Descritpions}">${Descritpions}</option>
+                        </c:forEach>
+                    </select>
                     <td><input type="text" name="ShippingCost"/></td>
                     <td><input type="text" name="Quantity"/></td>
                     <td><input type="text" name="freightCompany"/></td>

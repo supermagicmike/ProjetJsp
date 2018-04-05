@@ -52,6 +52,7 @@ public class CustomerController extends HttpServlet {
         {
             DAO dao = new DAO();
             request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
+            request.setAttribute("Descritpions", dao.GetProductsDescriptions());
             
             switch (action)
             {
