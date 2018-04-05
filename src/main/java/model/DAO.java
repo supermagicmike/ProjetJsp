@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
@@ -47,6 +49,7 @@ public class DAO {
         }
         return result;
     }
+        
 
     /**
      * Ajout d'un enregistrement dans la table DISCOUNT_CODE
@@ -230,6 +233,7 @@ public class DAO {
      * @throws DAOException
      */
     public float chiffreAffaireDate(String dateDeb, String dateFin) throws DAOException {
+        System.out.println("date Début: "+dateDeb+" Date Fin: "+dateFin);
         float prix =0;
 
         String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where sales_date between ? and ?";
@@ -286,7 +290,7 @@ public class DAO {
         CustomerEntity result = new CustomerEntity();
         float prix =0;
 
-        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer using(discount_code) where customer_id = ? and sales_date between ? and ?";
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(discount_code) where c.customer_id = ? and sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -306,6 +310,48 @@ public class DAO {
 
         return prix;
     }
+     public List<String> productCodes() throws SQLException {
+
+        List<String> result = new ArrayList<>();
+
+        String sql = "SELECT * FROM PRODUCT_CODE";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String res  = rs.getString("PROD_CODE");
+                result.add(res);
+            }
+        }
+        return result;
+    }
+     
+  public List<CustomerEntity> AllCustomers() throws DAOException {
+        List<CustomerEntity> result = new ArrayList();
+        String sql = "SELECT * FROM CUSTOMER";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
+                    CustomerEntity custo=new CustomerEntity();
+                    String name = rs.getString("NAME");
+                    String address = rs.getString("EMAIL");
+                    int customerID = rs.getInt("CUSTOMER_ID");
+                    // On crée l'objet "entity"
+                    custo.setCustomerId(customerID);
+                    custo.setEmail(address);
+                    custo.setName(name);
+                    result.add(custo);
+                } // else on n'a pas trouvé, on renverra null
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+
+        return result;
+    }   
+     
     
      /**
      * requête qui récupère les commandes d'un client
