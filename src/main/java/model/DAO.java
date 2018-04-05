@@ -307,5 +307,32 @@ public class DAO {
         return prix;
     }
     
+     /**
+     * requête qui récupère les commandes d'un client
+     *
+     * @param customerID la clé du CUSTOMER dont on veut les commandes
+     * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
+     * pas trouvé
+     * @throws DAOException
+     */
+     
+    public List<String> productCodes() throws DAOException {
+        ArrayList<String> codes = new ArrayList();
+        String sql = "SELECT product_code FROM product";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé                  
+                    String productCode = rs.getString("PRODUCT_CODE");
+                    // On crée l'objet "entity"
+                    codes.add(productCode);
+                } // else on n'a pas trouvé, on renverra null
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+            throw new DAOException(ex.getMessage());
+        }
+        return codes;
+    }
 
 }

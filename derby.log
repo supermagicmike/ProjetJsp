@@ -12,3 +12,8 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\micka\OneDrive\Documents\GitHub\ProjetJsp
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed Apr 04 07:24:36 EDT 2018: Shutting down Derby engine
+----------------------------------------------------------------
+Wed Apr 04 07:24:36 EDT 2018:
+Shutting down instance a816c00e-0162-8a0c-1e3c-ffffd3cf5ec6 on database directory C:\Users\micka\OneDrive\Documents\GitHub\ProjetJsp\sample with class loader sun.misc.Launcher$AppClassLoader@6f94fa3e 
