@@ -232,17 +232,16 @@ public class DAO {
      * pas trouvé
      * @throws DAOException
      */
-    public float chiffreAffaireDate(String dateDeb, String dateFin) throws DAOException {
+    public float chiffreAffaireEtat(String cate, String dateDeb, String dateFin) throws DAOException {
         System.out.println("date Début: "+dateDeb+" Date Fin: "+dateFin);
         float prix =0;
 
-        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where sales_date between ? and ?";
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(discount_code) where c.state= ? and  sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-
-            stmt.setString(1, dateDeb);
-            stmt.setString(2, dateFin);
-            
+            stmt.setString(1, cate);
+            stmt.setString(2, dateDeb);
+            stmt.setString(3, dateFin);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) { // On a trouvé
                     prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
@@ -264,14 +263,16 @@ public class DAO {
      * pas trouvé
      * @throws DAOException
      */
-    public float chiffreAffaireProduit(String categorie) throws DAOException {
+    public float chiffreAffaireProduit(String categorie,String dateDeb, String dateFin) throws DAOException {
         float prix =0;
 
-        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where product_code = ?";
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where product_code = ? and sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, categorie);
+            stmt.setString(2, dateDeb);
+            stmt.setString(3, dateFin);
             
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) { // On a trouvé
@@ -361,24 +362,25 @@ public class DAO {
      * pas trouvé
      * @throws DAOException
      */
-     
-    public List<String> productCodes() throws DAOException {
-        ArrayList<String> codes = new ArrayList();
-        String sql = "SELECT product_code FROM product";
+  
+    public List<String> allEtats()  throws DAOException {
+        List<String> result = new ArrayList();
+        String sql = "SELECT DISTINCT STATE FROM CUSTOMER";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) { // On a trouvé                  
-                    String productCode = rs.getString("PRODUCT_CODE");
-                    // On crée l'objet "entity"
-                    codes.add(productCode);
+                while (rs.next()) { // On a trouvé
+                    String etat = rs.getString("STATE");
+                    result.add(etat);
                 } // else on n'a pas trouvé, on renverra null
             }
         } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
-        return codes;
-    }
+
+        return result;
+    } 
+     
 
 }

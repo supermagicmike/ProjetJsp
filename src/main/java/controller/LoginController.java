@@ -131,18 +131,6 @@ public class LoginController extends HttpServlet {
             // On stocke l'information dans la session
             HttpSession session = request.getSession(true); // démarre la session
             session.setAttribute("userName", userName);
-            Map<String, Float> hm = new HashMap<>();
-            try {
-                List<String> productCodes = customer.productCodes();
-                for (String s : productCodes) {
-                    hm.put(s, customer.chiffreAffaireProduit(s));
-
-                }
-                request.setAttribute("affaires", hm);
-
-            } catch (SQLException ex) {
-
-            }
 
         }
         try {

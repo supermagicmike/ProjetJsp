@@ -25,31 +25,43 @@
 
         <table>
             <th>Product_Code</th>
-            <th>CA</th>
-                <c:forEach items="${ affaires }" var="affaire" varStatus="status">
+            <form method="post" action="<c:url value="AdminController"/>">
+                <p>
+                    <input type="text" name="produitDeb"/>
+                    <input type="text" name="produitFin"/>
+                    <input type="submit" name="action" value="PRODUCT"/>
+                </p>
+            </form>
+            <th>CA_produit</th>
+                <c:forEach items="${ CAProduit }" var="produit" varStatus="status">
                 <tr>
-                    <td>${affaire.key}</td>
-                    <td>${affaire.value}</td>
+                    <td>${produit.key}</td>
+                    <td>${produit.value}</td>
                 </tr>
             </c:forEach>
          </table>
 
             <form method="post" action="<c:url value="AdminController"/>">
                 <p>
-                    <input type="text" name="dateDeb"/>
-                    <input type="text" name="dateFin"/>
+                    <input type="text" name="etatDeb"/>
+                    <input type="text" name="etatFin"/>
 
-                    <input type="submit" name="action" value="DATE"/>
+                    <input type="submit" name="action" value="ETAT"/>
 
                 </p>
             </form>
-                <p>Chiffre affaire par année : ${ CA }</p>
+            <c:forEach items="${ CAEtat }" var="etat" varStatus="status">
+                <tr>
+                    <td>${etat.key}</td>
+                    <td>${etat.value}</td>
+                </tr>
+            </c:forEach>
                 
             <form method="post" action="<c:url value="AdminController"/>">
                 <p>
                     <!-- une balise select ou input ne peut pas être imbriquée directement dans form -->
-                    <input type="text" name="Deb"/>
-                    <input type="text" name="Fin"/>
+                    <input type="text" name="custoDeb"/>
+                    <input type="text" name="custoFin"/>
 
                     <input type="submit" name="action" value="CUSTO"/>
 

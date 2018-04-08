@@ -46,16 +46,43 @@ public class AdminController extends HttpServlet {
             log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<ACTION: " + action);
 
             switch (action) {
-                case "DATE": {
-                    String Datedeb = request.getParameter("dateDeb");
-                    String Datefin = request.getParameter("dateFin");
+                
+                
+                
+                
+                case "PRODUCT": {
+                    String productdeb = request.getParameter("produitDeb");
+                    String productfin = request.getParameter("produitFin");
+                    log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<deb:" + productdeb + " ///////////////////////////// fin" + productfin);
+                    Map<String, Float> hm = new HashMap<>();
+                try
+                {
+                    List<String> productCodes = dao.productCodes();
+                     for (String c :productCodes) {
+                            hm.put(c, dao.chiffreAffaireProduit(c,productdeb, productfin));
+                        }
+                        request.setAttribute("CAProduit", hm);
+                }
+                catch (SQLException ex)
+                {
+                    Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                       
+                }
+                case "ETAT": {
+                    String Datedeb = request.getParameter("etatDeb");
+                    String Datefin = request.getParameter("etatFin");
                     log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<deb:" + Datedeb + " ///////////////////////////// fin" + Datefin);
-                    float CA = dao.chiffreAffaireDate(Datedeb, Datefin);
-                    request.setAttribute("CA", CA);
+                    Map<String, Float> hm = new HashMap<>();
+                        List<String> etat = dao.allEtats();
+                        for (String s :etat) {
+                            hm.put(s, dao.chiffreAffaireEtat(s, Datedeb, Datefin));
+                        }
+                        request.setAttribute("CAEtat", hm);
                 }
                 case "CUSTO":
-                    String deb = request.getParameter("Deb");
-                    String fin = request.getParameter("Fin");
+                    String deb = request.getParameter("custoDeb");
+                    String fin = request.getParameter("custoFin");
                     Map<String, Float> hm = new HashMap<>();
                         List<CustomerEntity> customers = dao.AllCustomers();
                         for (CustomerEntity c :customers) {
