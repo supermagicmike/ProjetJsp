@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,7 @@ public class CustomerController extends HttpServlet {
             request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
             String action = request.getParameter("action");
             String code = request.getParameter("code");
+            int customerId= (Integer)(request.getSession().getAttribute("Id"));
             switch (action)
             {
                 case "DELETE":
@@ -55,11 +57,34 @@ public class CustomerController extends HttpServlet {
                     {
                         // Requête de suppression (vient du lien hypertexte)
                         dao.deletePurchase(Integer.valueOf(code));
+                        
+      
                        }
                     catch (SQLException ex)
                     {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    break;
+                }
+                case "ADD":
+                {
+                    int orderNum = Integer.valueOf(request.getParameter("orderNum"));
+                    int productId = Integer.valueOf(request.getParameter("productId"));
+                    int quantity = Integer.valueOf(request.getParameter("quantity"));
+                    String salesDate = request.getParameter("salesDate");
+                try
+                {
+                    dao.createPurshase(orderNum, customerId, productId, quantity, 2.F, salesDate,"2018-05-05", "compagny tqt");
+                }
+                catch (SQLException ex)
+                {
+                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    break;
+                }
+                case "UPDATE":
+                {
+                    
                     break;
                 }
 
