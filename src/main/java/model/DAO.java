@@ -345,6 +345,30 @@ public class DAO
         }
         return result;
     }
+    
+    
+    public int updatePurchase(int orderNum, int customerId, int productId, int quantity, float shippingCost, String salesDate, String shippingDate, String freightCompany) throws SQLException
+    {
+        int result =0;
+        String sql = "UPDATE PURCHASE_ORDER SET PRODUCT_ID = ?, QUANTITY=?, SHIPPING_COST=?, SALES_DATE=?, SHIPPING_DATE=?, FREIGHT_COMPANY=? where ORDER_NUM= ? and CUSTOMER_ID=?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql))
+        {
+
+            stmt.setInt(1, orderNum);
+            stmt.setInt(2, customerId);
+            stmt.setInt(3, productId);
+            stmt.setInt(4, quantity);
+            stmt.setFloat(5, shippingCost);
+            stmt.setString(6, salesDate);
+            stmt.setString(7, shippingDate);
+            stmt.setString(8, freightCompany);
+            result = stmt.executeUpdate();
+
+        }
+        return result;
+        
+    }
 
     /**
      * Supprime un enregistrement dans la table PURCHASE_ORDER
