@@ -127,7 +127,6 @@ public class DAO {
     public int findProductId(String Description) throws SQLException {
         
         int result = 0;
-        System.out.println("lalalallalalallalala "+Description);
         String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION LIKE ? ";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
