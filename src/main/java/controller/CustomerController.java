@@ -43,16 +43,13 @@ public class CustomerController extends HttpServlet {
     {
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
-        String code = request.getParameter("code");
-        String Description = request.getParameter("Description");
-        String ShippingCost = request.getParameter("ShippingCost");  
-        String Quantity = request.getParameter("Quantity"); 
-        String freightCompany = request.getParameter("freightCompany");
+        String code = request.getParameter("code");       
         try
         {
             DAO dao = new DAO();
             request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
             request.setAttribute("Descritpions", dao.GetProductsDescriptions());
+            request.setAttribute("Companies", dao.GetCompanies());
             
             switch (action)
             {
@@ -71,6 +68,11 @@ public class CustomerController extends HttpServlet {
                 }
                 case "ADD":
                     try {
+                        String Description = request.getParameter("Description");
+                        String ShippingCost = request.getParameter("ShippingCost");  
+                        String Quantity = request.getParameter("Quantity"); 
+                        String freightCompany = request.getParameter("freightCompany");
+                        dao.findProductId(Description);
                         dao.createPurshase((Integer)request.getSession().getAttribute("Id"), dao.findProductId(Description), Integer.parseInt(Quantity), Float.valueOf(ShippingCost), freightCompany);
                         request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
                         request.getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);

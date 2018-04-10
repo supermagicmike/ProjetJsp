@@ -124,22 +124,23 @@ public class DAO {
         return result;
     }
     
-    public int findProductId(String Description) throws DAOException {
+    public int findProductId(String Description) throws SQLException {
         
         int result = 0;
-        
-        String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION = ?";
+        System.out.println("lalalallalalallalala "+Description);
+        String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION LIKE ? ";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, Description);
-            try (ResultSet rs = stmt.executeQuery()) {               
-                    result = rs.getInt("PRODUCT_ID");                  
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
-            throw new DAOException(ex.getMessage());
-        }
+            ResultSet rs = stmt.executeQuery();                
+                   while (rs.next()) {
+                   result = rs.getInt("PRODUCT_ID");
+                           System.out.println("--------------------------------------------------"+result);
+
+            }                 
+            
+        } 
 
         return result;
     }
@@ -256,7 +257,7 @@ public class DAO {
 
         ArrayList<String> DescriptionList = new ArrayList();
 
-        String sql = "SELECT DESCRITPION FROM PRODUCT";
+        String sql = "SELECT DESCRIPTION FROM PRODUCT";
         try (Connection connection = myDataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
@@ -268,5 +269,23 @@ public class DAO {
             Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return DescriptionList;
+    }
+    
+    public ArrayList<String> GetCompanies() throws DAOException {
+
+        ArrayList<String> companies = new ArrayList();
+
+        String sql = "SELECT DISTINCT FREIGHT_COMPANY FROM PURCHASE_ORDER";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String companie = rs.getString("FREIGHT_COMPANY");                
+                companies.add(companie);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return companies;
     }
 }

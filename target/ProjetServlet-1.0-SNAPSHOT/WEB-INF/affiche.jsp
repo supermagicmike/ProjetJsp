@@ -45,16 +45,30 @@
             </tr>
             </c:forEach>
             <tr>
-                <form method='GET' action="<c:url value="CustomerController" />">
-                    <select name="Description">
-                        <c:forEach items="${ Descritpions }" var="Descritpions" varStatus="status">
-                            <option value="${Descritpions}">${Descritpions}</option>
-                        </c:forEach>
-                    </select>
-                    <td><input type="text" name="ShippingCost"/></td>
+                <form method='POST' action="<c:url value="CustomerController" />">
+                    <td>
+                        <select name="Description">
+                            <c:forEach var="d" items="${Descritpions}"  varStatus="status">
+                                <option value="${d}">${d}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
                     <td><input type="text" name="Quantity"/></td>
-                    <td><input type="text" name="freightCompany"/></td>
-                    <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="test"></td>
+                    <td>
+                        <select name="Companies">
+                            <c:forEach var="c" items="${Companies}"  varStatus="status">
+                                <option value="${c}">${c}</option>
+                            </c:forEach>
+                        </select>
+                    </td>  
+                    <td>
+                        <select name="Companies">
+                            <option value="0">Free delivery</option>
+                            <option value="5">Normal delivery</option>
+                            <option value="15">Fast delivery</option>
+                        </select>
+                    </td>
+                    <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="Ajouter"></td>
                 </form>
             </tr>
         </table>

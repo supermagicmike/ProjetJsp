@@ -118,6 +118,7 @@ public class LoginController extends HttpServlet {
 	}// </editor-fold>
 
 	private void checkLogin(HttpServletRequest request) throws DAOException {
+                
 		// Les paramètres transmis dans la requête
 		String loginParam = request.getParameter("loginParam");
 		String passwordParam = request.getParameter("passwordParam");
@@ -147,6 +148,8 @@ public class LoginController extends HttpServlet {
                         session.setAttribute("Id", cust.getCustomerId());
                         List<PurchaseEntity> purchase = customer.viewPurshases(cust.getCustomerId());
                         request.setAttribute("purchases", purchase);
+                        request.setAttribute("Descritpions", customer.GetProductsDescriptions());
+                        request.setAttribute("Companies", customer.GetCompanies());
                         
                 }}
                 else { // On positionne un message d'erreur pour l'afficher dans la JSP
