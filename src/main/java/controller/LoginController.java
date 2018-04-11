@@ -27,7 +27,9 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException, DAOException {
-		// Quelle action a appelé cette servlet ?
+		Boolean first = false;
+                request.setAttribute("first_time", first);
+                // Quelle action a appelé cette servlet ?
 		String action = request.getParameter("action");
                 DAO customer = new DAO();
 		if (null != action) {
@@ -61,7 +63,7 @@ public class LoginController extends HttpServlet {
 		}
 		// On va vers la page choisie
 		request.getRequestDispatcher(jspView).forward(request, response);
-
+                first = false;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -119,7 +121,7 @@ public class LoginController extends HttpServlet {
 
 	private void checkLogin(HttpServletRequest request) throws DAOException {
                 
-		// Les paramètres transmis dans la requête
+                // Les paramètres transmis dans la requête
 		String loginParam = request.getParameter("loginParam");
 		String passwordParam = request.getParameter("passwordParam");
 		// Le login/password défini dans web.xml
@@ -149,7 +151,8 @@ public class LoginController extends HttpServlet {
                         List<PurchaseEntity> purchase = customer.viewPurshases(cust.getCustomerId());
                         request.setAttribute("purchases", purchase);
                         request.setAttribute("Descritpions", customer.GetProductsDescriptions());
-                        request.setAttribute("Companies", customer.GetCompanies());
+                        request.setAttribute("Companies", customer.GetCompanies());                        
+                        
                         
                 }}
                 else { // On positionne un message d'erreur pour l'afficher dans la JSP

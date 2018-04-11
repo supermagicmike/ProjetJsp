@@ -38,7 +38,6 @@ public class CustomerController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Boolean editer = false;
-        int numero;
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
         String code = request.getParameter("code");
@@ -48,7 +47,7 @@ public class CustomerController extends HttpServlet {
             request.setAttribute("Descritpions", dao.GetProductsDescriptions());
             request.setAttribute("Companies", dao.GetCompanies());
             request.setAttribute("numero_edit", code);
-            request.setAttribute("editer", editer);
+            request.setAttribute("edit", editer);
 
             switch (action) {
                 case "DELETE": {

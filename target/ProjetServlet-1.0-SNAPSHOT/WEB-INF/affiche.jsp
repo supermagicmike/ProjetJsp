@@ -11,6 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>You are connected</title>
+        ${first_time} ${edit}  code = ${numero_edit}  ${userName}
     </head>
     <body>
         <h1>Bienvenue ${userName}</h1>
@@ -32,9 +33,9 @@
             
             <c:forEach items="${ purchases }" var="purchase" varStatus="status">
             <tr>
-                <c:if test="${editer == true}">
+                <c:if test="${(first_time == true) || (edit == false) || ((edit == true) && (numero_edit != purchase.orderNum))}">
                 <td>${purchase.description}</td>
-                <td><input type="text" name="Quantity" value="${purchase.quantity}" required/></td>
+                <td>${purchase.quantity}</td>
                 <td>${purchase.freightCompany}</td>
                 <td>${purchase.shippingCost}</td>
                 <td>${purchase.orderNum}</td>                
@@ -43,7 +44,34 @@
                 <td>${purchase.shippingDate}</td>               
                 <td>${purchase.totalCost}</td>
                 <td><a href="CustomerController?action=EDIT&code=${purchase.orderNum}">edit</a></td>
-                <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>                 
+                <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>    
+                </c:if>
+                
+                <c:if test="${(edit == true) && (numero_edit == purchase.orderNum)}">
+                <td>${purchase.description}</td>
+                <td><input type="text" name="editQuantity" value="${purchase.quantity}" required/></td>
+                <td>
+                    <select name="editFreightCompany">
+                        <c:forEach var="c" items="${Companies}"  varStatus="status">
+                            <option value="${c}">${c}</option>
+                        </c:forEach>
+                    </select>
+                </td>  
+                <td>
+                    <select name="editShippingCost">
+                        <option value="0">Free delivery</option>
+                        <option value="5">Normal delivery</option>
+                        <option value="15">Fast delivery</option>
+                    </select>
+                </td>
+                <td>${purchase.orderNum}</td>                
+                <td>${purchase.productId}</td>                
+                <td>${purchase.salesDate}</td>
+                <td>${purchase.shippingDate}</td>               
+                <td>${purchase.totalCost}</td>
+                <td><a href="CustomerController?action=EDIT&code=${purchase.orderNum}">edit</a></td>
+                <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>    
+                </c:if>
             </tr>
             </c:forEach>
             <tr>
