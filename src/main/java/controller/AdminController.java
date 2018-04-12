@@ -65,11 +65,14 @@ public class AdminController extends HttpServlet
                             hm.put(c, dao.chiffreAffaireProduit(c, productdeb, productfin));
                         }
                         request.setAttribute("CAProduit", hm);
+                        getServletContext().getRequestDispatcher("/WEB-INF/admin_product.jsp").forward(request, response);
                     }
                     catch (SQLException ex)
                     {
                         Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
+                    break;
 
                 }
                 case "ETAT":
@@ -84,6 +87,7 @@ public class AdminController extends HttpServlet
                         hm.put(s, dao.chiffreAffaireEtat(s, Datedeb, Datefin));
                     }
                     request.setAttribute("CAEtat", hm);
+                    break;
                 }
                 case "CUSTO":
                 {
@@ -96,10 +100,11 @@ public class AdminController extends HttpServlet
                         hm.put(c.getName(), dao.chiffreAffaireClientDate(c.getCustomerId(), deb, fin));
                     }
                     request.setAttribute("CAClient", hm);
+                    break;
                 }
                 case "TEST":{
                     getServletContext().getRequestDispatcher("/WEB-INF/admin_product.jsp").forward(request, response);
-                    
+                    break;
                 }
 
             }
@@ -110,7 +115,7 @@ public class AdminController extends HttpServlet
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        getServletContext().getRequestDispatcher("/WEB-INF/afficheAdmin.jsp").forward(request, response);
+      //  getServletContext().getRequestDispatcher("/WEB-INF/afficheAdmin.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
