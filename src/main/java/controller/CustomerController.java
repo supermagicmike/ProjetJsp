@@ -41,6 +41,7 @@ public class CustomerController extends HttpServlet {
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
         String code = request.getParameter("code");
+        String code_edit;
         try {
             DAO dao = new DAO();
             request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
@@ -48,7 +49,8 @@ public class CustomerController extends HttpServlet {
             request.setAttribute("Companies", dao.GetCompanies());
             request.setAttribute("numero_edit", code);
             request.setAttribute("edit", editer);
-
+            code_edit = code;
+            
             switch (action) {
                 case "DELETE": {
                     try {
@@ -77,7 +79,28 @@ public class CustomerController extends HttpServlet {
                     
                 case "EDIT":
                     editer = true;
+                    request.setAttribute("edit", editer);
                     break;
+                
+                case "VALIDEDIT":
+                    try {
+                        code = request.getParameter("code");
+                        editer = false;
+                        request.setAttribute("edit", editer);                       
+                        String editQuantity = request.getParameter("editQuantity");
+                        String editFreightCompany = request.getParameter("editFreightCompany");
+                        String editShippingCost = request.getParameter("editShippingCost"); 
+                        System.out.println("**************************quantity = "+editQuantity+" company = "+editFreightCompany+" cost = "+editShippingCost);
+                        dao.EditPurshase(                                
+                                Integer.parseInt(code_edit), 
+                                Integer.parseInt(editQuantity), 
+                                Float.parseFloat(editShippingCost), 
+                                editFreightCompany);
+                        request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
+                        break; 
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             }
         } catch (DAOException ex) {
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);

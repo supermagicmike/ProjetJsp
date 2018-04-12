@@ -287,4 +287,21 @@ public class DAO {
         }
         return companies;
     }
+    
+    public int EditPurshase(int orderNum, int quantity, float shippingCost, String freightCompany) throws SQLException {
+        int result = 0;
+        String sql = "UPDATE PURCHASE_ORDER SET QUANTITY = ?, FREIGHT_COMPANY = ?, SHIPPING_COST = ?, WHERE ORDER_NUM = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, quantity);            
+            stmt.setString(2, freightCompany);
+            stmt.setFloat(3, shippingCost);
+            stmt.setInt(4, orderNum);
+            System.out.println("-----------------------------------------------------------------------------1");
+            result = stmt.executeUpdate();
+            System.out.println("-----------------------------------------------------------------------------2");
+        }
+        System.out.println("-----------------------------------------------------------------------------3");
+        return result;
+    }
 }
