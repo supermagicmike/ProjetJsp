@@ -73,7 +73,12 @@
                     <td>${ca.value}</td>
                 </tr>
             </c:forEach>
+            <form method="post" action="<c:url value="AdminController"/>">
+                <p>
+                    <input type="submit" name="action" value="TEST"/>
+                </p>
+            </form>
 
-       
+       <!--mettre script c for each mleh pour boucler et mettre dans tableau js merci chatoune -->
     </body>
 </html>
