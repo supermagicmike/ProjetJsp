@@ -36,19 +36,19 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link" href="AdminController?action=admin_product">
+                <a class="nav-link active" href="AdminController?action=admin_product">
                   <span data-feather="shopping-cart"></span>
                   Products
                 </a>
               </li>
 			  <li class="nav-item">
-                <a class="nav-link" href="href=AdminController?action=admin_etat">
+                <a class="nav-link" href="AdminController?action=admin_state">
                   <span data-feather="file"></span>
                   Etat
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="href=AdminController?action=admin_customer">
+                <a class="nav-link" href="AdminController?action=admin_customer">
                   <span data-feather="users"></span>
                   Customers
                 </a>

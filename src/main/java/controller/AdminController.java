@@ -87,6 +87,7 @@ public class AdminController extends HttpServlet
                         hm.put(s, dao.chiffreAffaireEtat(s, Datedeb, Datefin));
                     }
                     request.setAttribute("CAEtat", hm);
+                     getServletContext().getRequestDispatcher("/WEB-INF/admin_state.jsp").forward(request, response);
                     break;
                 }
                 case "CUSTO":
@@ -100,12 +101,22 @@ public class AdminController extends HttpServlet
                         hm.put(c.getName(), dao.chiffreAffaireClientDate(c.getCustomerId(), deb, fin));
                     }
                     request.setAttribute("CAClient", hm);
+                     getServletContext().getRequestDispatcher("/WEB-INF/admin_customer.jsp").forward(request, response);
                     break;
                 }
-                case "TEST":{
+                case "admin_product":{
                     getServletContext().getRequestDispatcher("/WEB-INF/admin_product.jsp").forward(request, response);
                     break;
                 }
+                case "admin_customer":{
+                    getServletContext().getRequestDispatcher("/WEB-INF/admin_customer.jsp").forward(request, response);
+                    break;
+                }
+                case "admin_state":{
+                    getServletContext().getRequestDispatcher("/WEB-INF/admin_state.jsp").forward(request, response);
+                    break;
+                }
+                
 
             }
 

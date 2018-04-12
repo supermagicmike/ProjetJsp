@@ -75,7 +75,7 @@
             </c:forEach>
             <form method="post" action="<c:url value="AdminController"/>">
                 <p>
-                    <input type="submit" name="action" value="TEST"/>
+                    <input type="submit" name="action" value="admin_product"/>
                 </p>
             </form>
 
