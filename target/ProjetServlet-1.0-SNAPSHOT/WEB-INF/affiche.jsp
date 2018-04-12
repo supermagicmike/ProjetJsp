@@ -33,10 +33,14 @@
             </tr>
             </c:forEach>
             <tr>
-                <form method="post" action="traitement.php">
-                    <td><input type="text" name="OrderNum" /></td>
-                    <td><input type="text" name="prodductId" /></td>
-                    <td><input type="text" name="shippingCost" /></td>
+            <form method="post"  action="<c:url value="CustomerController"/>">
+                    <table>
+                    <td><input type="text" name="orderNum" /></td>
+                    <td><input type="text" name="productId" /></td>
+                    <td><input type="text" name="quantity" /></td>
+                    <td><input type="text" name="salesDate" /></td>
+                    <input type='submit' name='action' value='ADD'>
+                    </table>
                 </form>
             </tr>
         </table>
