@@ -84,15 +84,15 @@ public class CustomerController extends HttpServlet {
                 
                 case "VALIDEDIT":
                     try {
-                        code = request.getParameter("code");
+                        String num_edit = request.getParameter("num_edit");
                         editer = false;
-                        request.setAttribute("edit", editer);                       
+                        request.setAttribute("edit", editer);                 
                         String editQuantity = request.getParameter("editQuantity");
                         String editFreightCompany = request.getParameter("editFreightCompany");
                         String editShippingCost = request.getParameter("editShippingCost"); 
                         System.out.println("**************************quantity = "+editQuantity+" company = "+editFreightCompany+" cost = "+editShippingCost);
                         dao.EditPurshase(                                
-                                Integer.parseInt(code_edit), 
+                                Integer.parseInt(num_edit), 
                                 Integer.parseInt(editQuantity), 
                                 Float.parseFloat(editShippingCost), 
                                 editFreightCompany);

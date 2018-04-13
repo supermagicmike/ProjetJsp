@@ -65,7 +65,7 @@
                                 <option value="15">Fast delivery</option>
                             </select>
                         </td>
-                        <td>${purchase.orderNum}</td>                
+                        <td>${purchase.orderNum}<input type="hidden" name="num_edit" value="${purchase.orderNum}"></td>              
                         <td>${purchase.productId}</td>                
                         <td>${purchase.salesDate}</td>
                         <td>${purchase.shippingDate}</td>               

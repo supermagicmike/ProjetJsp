@@ -290,7 +290,7 @@ public class DAO {
     
     public int EditPurshase(int orderNum, int quantity, float shippingCost, String freightCompany) throws SQLException {
         int result = 0;
-        String sql = "UPDATE PURCHASE_ORDER SET QUANTITY = ?, FREIGHT_COMPANY = ?, SHIPPING_COST = ?, WHERE ORDER_NUM = ?";
+        String sql = "UPDATE PURCHASE_ORDER SET QUANTITY = ?, FREIGHT_COMPANY = ?, SHIPPING_COST = ? WHERE ORDER_NUM = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, quantity);            
