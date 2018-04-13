@@ -11,7 +11,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>You are connected</title>
-        first = ${first_time} edit = ${edit}  code = ${numero_edit}  ${userName}
     </head>
     <body>
         <h1>Bienvenue ${userName}</h1>
@@ -71,6 +70,7 @@
                         <td>${purchase.shippingDate}</td>               
                         <td>${purchase.totalCost}</td>
                         <td><input type="hidden" name="action" value="VALIDEDIT"><input type="submit" name="submit" value="valid"></td>
+                        <td><a href="CustomerController?action=ANNUL&code=${purchase.orderNum}">annul</a></td>
                         <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>  
                     </form>
                 </c:if>
