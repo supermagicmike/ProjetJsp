@@ -95,7 +95,6 @@ public class CustomerController extends HttpServlet
                     editer = true;
                     request.setAttribute("edit", editer);
                     break;
-
                     
                 case "ANNUL":
                     editer = false;
