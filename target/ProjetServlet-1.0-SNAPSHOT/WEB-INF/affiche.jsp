@@ -70,7 +70,7 @@
                         <td>${purchase.salesDate}</td>
                         <td>${purchase.shippingDate}</td>               
                         <td>${purchase.totalCost}</td>
-                        <td><input type="hidden" name="action" value="VALIDEDIT"><input type="submit" name="submit" value="valid"></td>
+                        <td><a href="CustomerController?action=VALIDEDIT&code=${purchase.orderNum}&editQuantity=${purchase.quantity}&editFreightCompany=${purchase.freightCompany}&editShippingCost=${purchase.shippingCost}">valid</a></td>
                         <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>  
                     </form>
                 </c:if>
