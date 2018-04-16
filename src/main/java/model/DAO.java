@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -197,6 +200,26 @@ public class DAO
 
         return result;
     }
+    
+    public int findProductId(String Description) throws SQLException {
+        
+        int result = 0;
+        String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION LIKE ? ";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, Description);
+            ResultSet rs = stmt.executeQuery();                
+                   while (rs.next()) {
+                   result = rs.getInt("PRODUCT_ID");
+                           System.out.println("--------------------------------------------------"+result);
+
+            }                 
+            
+        } 
+
+        return result;
+    }
 
     /**
      * requête qui récupère les commandes d'un client
@@ -212,6 +235,8 @@ public class DAO
     {
         ArrayList<PurchaseEntity> purchases = new ArrayList();
 
+        float totalCost = 0;
+        
         String sql = "SELECT * FROM PURCHASE_ORDER INNER JOIN PRODUCT USING(PRODUCT_ID) WHERE CUSTOMER_ID = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql))
@@ -233,7 +258,8 @@ public class DAO
                     String SalesDate = rs.getString("SALES_DATE");
                     String ShippingDate = rs.getString("SHIPPING_DATE");
                     String FreightCompany = rs.getString("FREIGHT_COMPANY");
-
+                    String Description = rs.getString("DESCRIPTION");
+                    float ProductCost = rs.getFloat("PURCHASE_COST");
                     // On crée l'objet "entity"
                     result.setOrderNum(OrderNum);
                     result.setCustomerId(CustomerId);
@@ -243,7 +269,9 @@ public class DAO
                     result.setSalesDate(SalesDate);
                     result.setShippingDate(ShippingDate);
                     result.setFreightCompany(FreightCompany);
-
+                    result.setDescription(Description);
+                    totalCost = (ProductCost * Quantity) + ShippingCost;
+                    result.setTotalCost(totalCost);
                     purchases.add(result);
                 } // else on n'a pas trouvé, on renverra null
             }
@@ -324,21 +352,22 @@ public class DAO
      *
      * @throws DAOException
      */
-    public int createPurshase(int orderNum, int customerId, int productId, int quantity, float shippingCost, String salesDate, String shippingDate, String freightCompany) throws SQLException
-    {
+    public int createPurshase(int customerId, int productId, int quantity, float shippingCost, String freightCompany) throws SQLException {
+                
+        Date date = new Date();
         int result = 0;
         String sql = "INSERT INTO PURCHASE_ORDER VALUES(?,?,?,?,?,?,?,?)";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql))
         {
 
-            stmt.setInt(1, orderNum);
+            stmt.setInt(1, (int)(Math.random() * 50000));
             stmt.setInt(2, customerId);
             stmt.setInt(3, productId);
             stmt.setInt(4, quantity);
             stmt.setFloat(5, shippingCost);
-            stmt.setString(6, salesDate);
-            stmt.setString(7, shippingDate);
+            stmt.setDate(6, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            stmt.setDate(7, java.sql.Date.valueOf(java.time.LocalDate.now()));
             stmt.setString(8, freightCompany);
             result = stmt.executeUpdate();
 
@@ -589,4 +618,56 @@ public class DAO
         return result;
     }
 
+    public ArrayList<String> GetProductsDescriptions() throws DAOException {
+
+        ArrayList<String> DescriptionList = new ArrayList();
+
+        String sql = "SELECT DESCRIPTION FROM PRODUCT";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String Descritpion = rs.getString("DESCRIPTION");                
+                DescriptionList.add(Descritpion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return DescriptionList;
+    }
+    
+    public ArrayList<String> GetCompanies() throws DAOException {
+
+        ArrayList<String> companies = new ArrayList();
+
+        String sql = "SELECT DISTINCT FREIGHT_COMPANY FROM PURCHASE_ORDER";
+        try (Connection connection = myDataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String companie = rs.getString("FREIGHT_COMPANY");                
+                companies.add(companie);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return companies;
+    }
+    
+    public int EditPurshase(int orderNum, int quantity, float shippingCost, String freightCompany) throws SQLException {
+        int result = 0;
+        String sql = "UPDATE PURCHASE_ORDER SET QUANTITY = ?, FREIGHT_COMPANY = ?, SHIPPING_COST = ? WHERE ORDER_NUM = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, quantity);            
+            stmt.setString(2, freightCompany);
+            stmt.setFloat(3, shippingCost);
+            stmt.setInt(4, orderNum);
+            System.out.println("-----------------------------------------------------------------------------1");
+            result = stmt.executeUpdate();
+            System.out.println("-----------------------------------------------------------------------------2");
+        }
+        System.out.println("-----------------------------------------------------------------------------3");
+        return result;
+    }
 }
