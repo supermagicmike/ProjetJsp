@@ -11,7 +11,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>You are connected</title>
-        first = ${first_time} edit = ${edit}  code = ${numero_edit}  ${userName}
     </head>
     <body>
         <h1>Bienvenue ${userName}</h1>
@@ -65,12 +64,13 @@
                                 <option value="15">Fast delivery</option>
                             </select>
                         </td>
-                        <td>${purchase.orderNum}</td>                
+                        <td>${purchase.orderNum}<input type="hidden" name="num_edit" value="${purchase.orderNum}"></td>              
                         <td>${purchase.productId}</td>                
                         <td>${purchase.salesDate}</td>
                         <td>${purchase.shippingDate}</td>               
                         <td>${purchase.totalCost}</td>
-                        <td><a href="CustomerController?action=VALIDEDIT&code=${purchase.orderNum}&editQuantity=${purchase.quantity}&editFreightCompany=${purchase.freightCompany}&editShippingCost=${purchase.shippingCost}">valid</a></td>
+                        <td><input type="hidden" name="action" value="VALIDEDIT"><input type="submit" name="submit" value="valid"></td>
+                        <td><a href="CustomerController?action=ANNUL&code=${purchase.orderNum}">annul</a></td>
                         <td><a href="CustomerController?action=DELETE&code=${purchase.orderNum}">delete</a></td>  
                     </form>
                 </c:if>

@@ -96,21 +96,25 @@ public class CustomerController extends HttpServlet
                     request.setAttribute("edit", editer);
                     break;
 
+                    
+                case "ANNUL":
+                    editer = false;
+                    request.setAttribute("edit", editer);
+                    break;
+                
                 case "VALIDEDIT":
-                    try
-                    {
-                        Logger.getLogger(CustomerController.class.getName()).info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< code: "+request.getParameter("code"));
-                        code = request.getParameter("code");
+                    try {
+                        String num_edit = request.getParameter("num_edit");
                         editer = false;
-                        request.setAttribute("edit", editer);
+                        request.setAttribute("edit", editer);                 
                         String editQuantity = request.getParameter("editQuantity");
                         String editFreightCompany = request.getParameter("editFreightCompany");
-                        String editShippingCost = request.getParameter("editShippingCost");
-                        System.out.println("**************************quantity = " + editQuantity + " company = " + editFreightCompany + " cost = " + editShippingCost);
-                        dao.EditPurshase(
-                                Integer.parseInt(code),
-                                Integer.parseInt(editQuantity),
-                                Float.parseFloat(editShippingCost),
+                        String editShippingCost = request.getParameter("editShippingCost"); 
+                        System.out.println("**************************quantity = "+editQuantity+" company = "+editFreightCompany+" cost = "+editShippingCost);
+                        dao.EditPurshase(                                
+                                Integer.parseInt(num_edit), 
+                                Integer.parseInt(editQuantity), 
+                                Float.parseFloat(editShippingCost), 
                                 editFreightCompany);
                         request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
                         break;
