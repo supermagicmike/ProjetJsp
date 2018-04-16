@@ -116,6 +116,10 @@ public class AdminController extends HttpServlet
                     getServletContext().getRequestDispatcher("/WEB-INF/admin_state.jsp").forward(request, response);
                     break;
                 }
+                case "admincust":{
+                    getServletContext().getRequestDispatcher("/WEB-INF/admincust.jsp").forward(request, response);
+                    break;
+                }
                 
 
             }

@@ -77,6 +77,9 @@
                 <p>
                     <input type="submit" name="action" value="admin_product"/>
                 </p>
+                                <p>
+                    <input type="submit" name="action" value="admincust"/>
+                </p>
             </form>
 
        <!--mettre script c for each mleh pour boucler et mettre dans tableau js merci chatoune -->
