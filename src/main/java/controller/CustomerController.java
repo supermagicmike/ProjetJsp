@@ -19,15 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 import model.DAO;
 import model.DAOException;
 
-
-
 /**
  *
  * @author tzanchi
  */
-@WebServlet(name = "CustomerController", urlPatterns = {"/CustomerController"})
-public class CustomerController extends HttpServlet {
-
+@WebServlet(name = "CustomerController", urlPatterns =
+{
+    "/CustomerController"
+})
+public class CustomerController extends HttpServlet
+{
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,13 +43,22 @@ public class CustomerController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        Boolean editer = false;
+        String action = request.getParameter("action");
+        action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
+        String code = request.getParameter("code");
+        String code_edit;
         try
         {
             DAO dao = new DAO();
-            request.setAttribute("purchases", dao.viewPurshases((Integer)request.getSession().getAttribute("Id")));
-            String action = request.getParameter("action");
-            String code = request.getParameter("code");
-            int customerId= (Integer)(request.getSession().getAttribute("Id"));
+            request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
+            request.setAttribute("Descritpions", dao.GetProductsDescriptions());
+            request.setAttribute("Companies", dao.GetCompanies());
+            request.setAttribute("numero_edit", code);
+            request.setAttribute("edit", editer);
+            code_edit = code;
+
+
             switch (action)
             {
                 case "DELETE":
@@ -57,9 +67,9 @@ public class CustomerController extends HttpServlet {
                     {
                         // Requête de suppression (vient du lien hypertexte)
                         dao.deletePurchase(Integer.valueOf(code));
-                        
-      
-                       }
+                        request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
+                    }
+
                     catch (SQLException ex)
                     {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,42 +77,72 @@ public class CustomerController extends HttpServlet {
                     break;
                 }
                 case "ADD":
-                {
-                    int orderNum = Integer.valueOf(request.getParameter("orderNum"));
-                    int productId = Integer.valueOf(request.getParameter("productId"));
-                    int quantity = Integer.valueOf(request.getParameter("quantity"));
-                    String salesDate = request.getParameter("salesDate");
-                try
-                {
-                    dao.createPurshase(orderNum, customerId, productId, quantity, 2.F, salesDate,"2018-05-05", "compagny tqt");
-                }
-                catch (SQLException ex)
-                {
-                    Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                    break;
-                }
-                case "UPDATE":
-                {
-                    
-                    break;
-                }
 
+                    try
+                    {
+                        String Description = request.getParameter("Description");
+                        String ShippingCost = request.getParameter("ShippingCost");
+                        String Quantity = request.getParameter("Quantity");
+                        String freightCompany = request.getParameter("freightCompany");
+                        System.out.println("++++++++++++++++++++++++++++++++++++++++" + dao.findProductId(Description));
+                        dao.createPurshase((Integer) request.getSession().getAttribute("Id"), dao.findProductId(Description), Integer.parseInt(Quantity), Float.parseFloat(ShippingCost), freightCompany);
+                        request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
+                        
+                    }
+                    catch (SQLException ex)
+                    {
+                        Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+
+                case "EDIT":
+                    editer = true;
+                    request.setAttribute("edit", editer);
+                    break;
+                    
+                case "ANNUL":
+                    editer = false;
+                    request.setAttribute("edit", editer);
+                    break;
+                
+                case "VALIDEDIT":
+                    try {
+                        String num_edit = request.getParameter("num_edit");
+                        editer = false;
+                        request.setAttribute("edit", editer);                 
+                        String editQuantity = request.getParameter("editQuantity");
+                        String editFreightCompany = request.getParameter("editFreightCompany");
+                        String editShippingCost = request.getParameter("editShippingCost"); 
+                        System.out.println("**************************quantity = "+editQuantity+" company = "+editFreightCompany+" cost = "+editShippingCost);
+                        dao.EditPurshase(                                
+                                Integer.parseInt(num_edit), 
+                                Integer.parseInt(editQuantity), 
+                                Float.parseFloat(editShippingCost), 
+                                editFreightCompany);
+                        request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
+                        break;
+                    }
+                    catch (SQLException ex)
+                    {
+                        Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             }
         }
         catch (DAOException ex)
         {
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally
+        {
 
-        getServletContext().getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
+        }
+        //getServletContext().getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request  servlet request
      * @param response servlet response
      *
@@ -111,7 +151,8 @@ public class CustomerController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         processRequest(request, response);
     }
 
@@ -125,6 +166,7 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
@@ -135,7 +177,8 @@ public class CustomerController extends HttpServlet {
      */
     @Override
 
-    public String getServletInfo() {
+    public String getServletInfo()
+    {
         return "Short description";
     }// </editor-fold>
 
