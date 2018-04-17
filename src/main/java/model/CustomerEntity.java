@@ -14,6 +14,7 @@ public class CustomerEntity {
 	private int customerId;
 	private String name;
 	private String email;
+        private int creditLimit;
 
 	public CustomerEntity() {
 
@@ -59,6 +60,14 @@ public class CustomerEntity {
     public void setEmail(String email)
     {
         this.email = email;
+    }
+
+    public int getCreditLimit() {
+        return creditLimit;
+    }
+
+    public void setCreditLimit(int creditLimit) {
+        this.creditLimit = creditLimit;
     }
         
 
