@@ -1,6 +1,8 @@
+controller\AdminController.class
 model\DataSourceFactory.class
 controller\LoginController.class
 model\DAOException.class
+model\ProductEntity.class
 model\PurchaseEntity.class
 model\CustomerEntity.class
 controller\CustomerController.class

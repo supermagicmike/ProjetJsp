@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +58,7 @@ public class CustomerController extends HttpServlet
             request.setAttribute("edit", editer);
             code_edit = code;
 
+
             switch (action)
             {
                 case "DELETE":
@@ -67,6 +69,7 @@ public class CustomerController extends HttpServlet
                         dao.deletePurchase(Integer.valueOf(code));
                         request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
                     }
+
                     catch (SQLException ex)
                     {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,6 +77,7 @@ public class CustomerController extends HttpServlet
                     break;
                 }
                 case "ADD":
+
                     try
                     {
                         String Description = request.getParameter("Description");
@@ -139,9 +143,6 @@ public class CustomerController extends HttpServlet
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
-     *
-     * <<<<<<< HEAD
-     *
      * @param request  servlet request
      * @param response servlet response
      *
@@ -157,19 +158,15 @@ public class CustomerController extends HttpServlet
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
-     * <<<<<<< HEAD
-     *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
-     *
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
@@ -179,6 +176,7 @@ public class CustomerController extends HttpServlet
      * @return a String containing servlet description
      */
     @Override
+
     public String getServletInfo()
     {
         return "Short description";
