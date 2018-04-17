@@ -31,7 +31,7 @@
 
 
         <!--  CSS for Demo Purpose, don't include it in your project     -->
-        <link href="assets/css/demo.css" rel="stylesheet" />
+    
         <link href="css/jquery-ui.min.css" rel="stylesheet" />
 
 
