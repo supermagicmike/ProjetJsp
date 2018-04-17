@@ -13,15 +13,18 @@
             <div class="login-page">
                 <img id="logo" src="pictures/avatarr.jpeg" alt="" width="100" height="100">
                 <div class="form">
-                    <h1 id="titre">Member login</h1>
+                    <h1>Member login</h1>
                     <form class="login-form" action="<c:url value="LoginController" />" method="POST">                         
                         <input name='loginParam' type="username"  id="usern" placeholder="nom d'utilisateur" required/>                       
                         <input name='passwordParam' type="password" id="passwd" placeholder="mot de passe" required/>
-                        <input type='submit' name='action' value='login'class="btn btn-lg btn-outline-secondary">
+                        <input type='submit' name='action' value='log in'class="btn btn-lg btn-outline-secondary">
                     </form>
-                </div>                       
-            </div>
-       
+                </div>
+                        <p id="dedicace">
+                            @Projet Web 2018
+                            Adechy Commerot Zanchi
+                        </p>
+            </div>       
     </body>
 </html>
 

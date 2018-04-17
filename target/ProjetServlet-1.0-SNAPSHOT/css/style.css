@@ -12,6 +12,7 @@ and open the template in the editor.
   width: 360px;
   padding: 8% 0 0;
   margin: auto;
+  text-align: center;
 }
 .form {
   position: relative;
@@ -106,6 +107,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-#logo{
-    margin-left: 128px;
+h1{
+    color: lightslategray;
+}
+#dedicace{
+    color: white;
 }
