@@ -617,6 +617,13 @@ public class DAO
 
         return result;
     }
+    
+    	/**
+	 * renvoie la liste des descriptions des produits
+	 *
+
+     * @throws model.DAOException
+	 */
 
     public ArrayList<String> GetProductsDescriptions() throws DAOException {
 
