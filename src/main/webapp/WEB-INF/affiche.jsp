@@ -15,6 +15,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
         <title>Paper Dashboard by Creative Tim</title>
+        <title>Commands</title>
 
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
@@ -58,8 +59,16 @@
                     <ul class="nav">
                         <li class="active">
                             <a href="dashboard.html">
+                            <a href="CustomerController?action=REFRESH">
                                 <i class="ti-view-list-alt"></i>
                                 <p>Commandes</p>
+                                <p>Commands</p>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="CustomerController?action=CASHTRANSFERT">
+                                <i class="ti-view-list-alt"></i>
+                                <p>Cash transfert<small> of 5000$</small></p>
                             </a>
                         </li>
                     </ul>
@@ -77,6 +86,7 @@
                                 <span class="icon-bar bar3"></span>
                             </button>
                             <a class="navbar-brand" href="#">User Profile</a>
+                            <a class="navbar-brand" href="#">User's Commands</a>
                         </div>
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
@@ -105,8 +115,10 @@
                                     <div class="content">
                                         <div class="author">
                                             <img class="avatar border-white" src="assets/img/faces/face-2.jpg" alt="..."/>
+                                            <img class="avatar border-white" src="assets/img/faces/face-0.jpg" alt="..."/>
                                             <h4 class="title"> ${userName}<br />
                                                 <a href="#"><small>@ ${userName}</small></a>
+                                                <a href="#"><small>${userName}</small></a>
                                             </h4>
                                         </div>
                                         <p class="description text-center">
@@ -127,6 +139,8 @@
                                             <div class="col-md-3">
                                                 <h5>24,6$<br /><small>Spent</small></h5>
                                             </div>
+                                        <div class="row">                                           
+                                                <h5>Credit<br /><small>${customer_credit}</small></h5>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -137,6 +151,8 @@
                                     <div class="header">
                                         <h4 class="title">Striped Table</h4>
                                         <p class="category">Here is a subtitle for this table</p>
+                                        <h4 class="title">Commands</h4>
+                                        <p class="category">Here is your commands</p>
                                     </div>
                                     <div class="content table-responsive table-full-width">
                                         <table class="table table-striped">
@@ -161,7 +177,6 @@
                                                             <td>${purchase.shippingCost}</td>
                                                             <td>${purchase.orderNum}</td>                
                                                             <td>${purchase.productId}</td>                
-                                                            <td>${purchase.salesDate}</td>
                                                             <td>${purchase.shippingDate}</td>               
                                                             <td>${purchase.totalCost}</td>
                                                             <td><a href="CustomerController?action=EDIT&code=${purchase.orderNum}">edit</a></td>
@@ -188,7 +203,6 @@
                                                         </td>
                                                         <td>${purchase.orderNum}<input type="hidden" name="num_edit" value="${purchase.orderNum}"></td>              
                                                         <td>${purchase.productId}</td>                
-                                                        <td>${purchase.salesDate}</td>
                                                         <td>${purchase.shippingDate}</td>               
                                                         <td>${purchase.totalCost}</td>
                                                         <td><input type="hidden" name="action" value="VALIDEDIT"><input type="submit" name="submit" value="valid"></td>
@@ -224,6 +238,7 @@
                                                     </select>
                                                 </td>
                                                 <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="Ajouter"></td>
+                                                <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="Add"></td>
                                             </form>
                                             </tr>
                                             </tbody>
@@ -275,4 +290,5 @@
 
     <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
     <script src="assets/js/demo.js"></script>
+    
 </html>
