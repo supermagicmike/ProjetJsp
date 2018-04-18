@@ -14,7 +14,6 @@
         <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-        <title>Paper Dashboard by Creative Tim</title>
         <title>Commands</title>
 
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -58,10 +57,8 @@
 
                     <ul class="nav">
                         <li class="active">
-                            <a href="dashboard.html">
                             <a href="CustomerController?action=REFRESH">
                                 <i class="ti-view-list-alt"></i>
-                                <p>Commandes</p>
                                 <p>Commands</p>
                             </a>
                         </li>
@@ -85,7 +82,6 @@
                                 <span class="icon-bar bar2"></span>
                                 <span class="icon-bar bar3"></span>
                             </button>
-                            <a class="navbar-brand" href="#">User Profile</a>
                             <a class="navbar-brand" href="#">User's Commands</a>
                         </div>
                         <div class="collapse navbar-collapse">
@@ -114,30 +110,14 @@
                                     </div>
                                     <div class="content">
                                         <div class="author">
-                                            <img class="avatar border-white" src="assets/img/faces/face-2.jpg" alt="..."/>
                                             <img class="avatar border-white" src="assets/img/faces/face-0.jpg" alt="..."/>
                                             <h4 class="title"> ${userName}<br />
                                                 <a href="#"><small>${userName}</small></a>
                                             </h4>
                                         </div>
-                                        <p class="description text-center">
-                                            "I like the way you work it <br>
-                                            No diggity <br>
-                                            I wanna bag it up"
-                                        </p>
                                     </div>
                                     <hr>
                                     <div class="text-center">
-                                        <div class="row">
-                                            <div class="col-md-3 col-md-offset-1">
-                                                <h5>12<br /><small>Files</small></h5>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <h5>2GB<br /><small>Used</small></h5>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <h5>24,6$<br /><small>Spent</small></h5>
-                                            </div>
                                         <div class="row">                                           
                                                 <h5>Credit<br /><small>${customer_credit}</small></h5>                                           
                                         </div>
@@ -148,8 +128,6 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="header">
-                                        <h4 class="title">Striped Table</h4>
-                                        <p class="category">Here is a subtitle for this table</p>
                                         <h4 class="title">Commands</h4>
                                         <p class="category">Here is your commands</p>
                                     </div>
@@ -162,7 +140,6 @@
                                             <th>Shipping Cost</th>
                                             <th>Order Num</th>
                                             <th>Product Id</th> 
-                                            <th>Sales Date</th>
                                             <th>Shipping Date</th>                
                                             <th>Total Price</th>
                                             </thead>
@@ -176,7 +153,6 @@
                                                             <td>${purchase.shippingCost}</td>
                                                             <td>${purchase.orderNum}</td>                
                                                             <td>${purchase.productId}</td>                
-                                                            <td>${purchase.salesDate}</td>
                                                             <td>${purchase.shippingDate}</td>               
                                                             <td>${purchase.totalCost}</td>
                                                             <td><a href="CustomerController?action=EDIT&code=${purchase.orderNum}">edit</a></td>
@@ -203,7 +179,6 @@
                                                         </td>
                                                         <td>${purchase.orderNum}<input type="hidden" name="num_edit" value="${purchase.orderNum}"></td>              
                                                         <td>${purchase.productId}</td>                
-                                                        <td>${purchase.salesDate}</td>
                                                         <td>${purchase.shippingDate}</td>               
                                                         <td>${purchase.totalCost}</td>
                                                         <td><input type="hidden" name="action" value="VALIDEDIT"><input type="submit" name="submit" value="valid"></td>
@@ -238,7 +213,6 @@
                                                         <option value="15">Fast delivery</option>
                                                     </select>
                                                 </td>
-                                                <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="Ajouter"></td>
                                                 <td><input type="hidden" name="action" value="ADD"><input type="submit" name="submit" value="Add"></td>
                                             </form>
                                             </tr>
