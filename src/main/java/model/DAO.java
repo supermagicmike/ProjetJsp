@@ -14,8 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
-public class DAO
-{
 public class DAO {
 
     private final DataSource myDataSource;
@@ -25,8 +23,6 @@ public class DAO {
      *
      * @param dataSource la source de données à utiliser
      */
-    public DAO()
-    {
     public DAO() {
         this.myDataSource = DataSourceFactory.getDataSource();
     }

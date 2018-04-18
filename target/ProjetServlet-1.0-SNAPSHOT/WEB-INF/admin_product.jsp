@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%-- 
     Document   : admincust
     Created on : 16-Apr-2018, 3:23:55 PM

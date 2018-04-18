@@ -57,7 +57,6 @@ public class LoginController extends HttpServlet {
 		} else { // L'utilisateur est connecté
 			// On choisit la page d'affichage
                         if(userName.equals("Mr. Super-User")){
-                            jspView="WEB-INF/afficheAdmin.jsp";
                             jspView="WEB-INF/admin_product.jsp";
                         }else{
 			jspView = "WEB-INF/affiche.jsp";
@@ -153,7 +152,6 @@ public class LoginController extends HttpServlet {
                         List<PurchaseEntity> purchase = customer.viewPurshases(cust.getCustomerId());
                         request.setAttribute("purchases", purchase);
                         request.setAttribute("Descritpions", customer.GetProductsDescriptions());
-                        request.setAttribute("Companies", customer.GetCompanies());                        
                         request.setAttribute("Companies", customer.GetCompanies());                         
                         try {           
                             request.setAttribute("customer_credit", customer.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));

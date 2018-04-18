@@ -23,12 +23,6 @@ import model.DAOException;
  *
  * @author tzanchi
  */
-@WebServlet(name = "CustomerController", urlPatterns =
-{
-    "/CustomerController"
-})
-public class CustomerController extends HttpServlet
-{
 @WebServlet(name = "CustomerController", urlPatterns
         = {
             "/CustomerController"
@@ -39,25 +33,18 @@ public class CustomerController extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request  servlet request
      * @param request servlet request
      * @param response servlet response
      *
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
             throws ServletException, IOException {
         Boolean editer = false;
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
         String code = request.getParameter("code");
-        String code_edit;
-        try
-        {
         try {
             DAO dao = new DAO();
             request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
@@ -65,30 +52,18 @@ public class CustomerController extends HttpServlet {
             request.setAttribute("Companies", dao.GetCompanies());
             request.setAttribute("numero_edit", code);
             request.setAttribute("edit", editer);
-            code_edit = code;
-
             try {
                 request.setAttribute("customer_credit", dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));
             } catch (SQLException ex) {
                 Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            switch (action)
-            {
-                case "DELETE":
-                {
-                    try
-                    {
             switch (action) {
                 case "DELETE": {
                     try {
                         // Requête de suppression (vient du lien hypertexte)
                         dao.deletePurchase(Integer.valueOf(code));
                         request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
-                    }
-
-                    catch (SQLException ex)
-                    {
                     } catch (SQLException ex) {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -96,20 +71,11 @@ public class CustomerController extends HttpServlet {
                 }
                 case "ADD":
 
-                    try
-                    {
                     try {
                         String Description = request.getParameter("Description");
                         String ShippingCost = request.getParameter("ShippingCost");
                         String Quantity = request.getParameter("Quantity");
                         String freightCompany = request.getParameter("freightCompany");
-                        System.out.println("++++++++++++++++++++++++++++++++++++++++" + dao.findProductId(Description));
-                        dao.createPurshase((Integer) request.getSession().getAttribute("Id"), dao.findProductId(Description), Integer.parseInt(Quantity), Float.parseFloat(ShippingCost), freightCompany);
-                        request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
-                        
-                    }
-                    catch (SQLException ex)
-                    {
                         if(dao.CheckEnoughMoney(dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")), dao.findProductCost(Description), Integer.parseInt(Quantity))) {
                            dao.createPurshase((Integer) request.getSession().getAttribute("Id"), dao.findProductId(Description), Integer.parseInt(Quantity), Float.parseFloat(ShippingCost), freightCompany);                          
                            request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id"))); 
@@ -129,34 +95,19 @@ public class CustomerController extends HttpServlet {
                     editer = true;
                     request.setAttribute("edit", editer);
                     break;
-                    
 
                 case "ANNUL":
                     editer = false;
                     request.setAttribute("edit", editer);
                     break;
-                
 
                 case "VALIDEDIT":
                     try {
                         String num_edit = request.getParameter("num_edit");
                         editer = false;
-                        request.setAttribute("edit", editer);                 
                         request.setAttribute("edit", editer);
                         String editQuantity = request.getParameter("editQuantity");
                         String editFreightCompany = request.getParameter("editFreightCompany");
-                        String editShippingCost = request.getParameter("editShippingCost"); 
-                        System.out.println("**************************quantity = "+editQuantity+" company = "+editFreightCompany+" cost = "+editShippingCost);
-                        dao.EditPurshase(                                
-                                Integer.parseInt(num_edit), 
-                                Integer.parseInt(editQuantity), 
-                                Float.parseFloat(editShippingCost), 
-                                editFreightCompany);
-                        request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
-                        break;
-                    }
-                    catch (SQLException ex)
-                    {
                         String editShippingCost = request.getParameter("editShippingCost");
                         if(dao.CheckEnoughMoney(dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")), dao.findProductCostById(Integer.parseInt(num_edit)), Integer.parseInt(editQuantity))) {
                            dao.EditPurshase(Integer.parseInt(num_edit), Integer.parseInt(editQuantity), Float.parseFloat(editShippingCost), editFreightCompany);
@@ -188,14 +139,8 @@ public class CustomerController extends HttpServlet {
                     }                   
                     break;
             }
-        }
-        catch (DAOException ex)
-        {
         } catch (DAOException ex) {
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally
-        {
         } finally {
 
         }
@@ -206,19 +151,15 @@ public class CustomerController extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
-     * @param request  servlet request
      *
      * @param request servlet request
      * @param response servlet response
      *
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -245,8 +186,6 @@ public class CustomerController extends HttpServlet {
      */
     @Override
 
-    public String getServletInfo()
-    {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
