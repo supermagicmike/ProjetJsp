@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +58,7 @@ public class LoginController extends HttpServlet {
 			// On choisit la page d'affichage
                         if(userName.equals("Mr. Super-User")){
                             jspView="WEB-INF/afficheAdmin.jsp";
+                            jspView="WEB-INF/admin_product.jsp";
                         }else{
 			jspView = "WEB-INF/affiche.jsp";
                         }
@@ -152,6 +154,12 @@ public class LoginController extends HttpServlet {
                         request.setAttribute("purchases", purchase);
                         request.setAttribute("Descritpions", customer.GetProductsDescriptions());
                         request.setAttribute("Companies", customer.GetCompanies());                        
+                        request.setAttribute("Companies", customer.GetCompanies());                         
+                        try {           
+                            request.setAttribute("customer_credit", customer.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));
+                        } catch (SQLException ex) {
+                            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         
                         
                 }}

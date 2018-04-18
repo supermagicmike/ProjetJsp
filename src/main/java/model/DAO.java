@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 public class DAO
 {
+public class DAO {
 
     private final DataSource myDataSource;
 
@@ -26,6 +27,7 @@ public class DAO
      */
     public DAO()
     {
+    public DAO() {
         this.myDataSource = DataSourceFactory.getDataSource();
     }
 
@@ -36,18 +38,15 @@ public class DAO
      *
      * @throws SQLException renvoyées par JDBC
      */
-    public List<DiscountCode> allCodes() throws SQLException
-    {
+    public List<DiscountCode> allCodes() throws SQLException {
 
         List<DiscountCode> result = new LinkedList<>();
 
         String sql = "SELECT * FROM DISCOUNT_CODE ORDER BY DISCOUNT_CODE";
         try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 String id = rs.getString("DISCOUNT_CODE");
                 float rate = rs.getFloat("RATE");
                 DiscountCode c = new DiscountCode(id, rate);
@@ -67,13 +66,11 @@ public class DAO
      *
      * @throws SQLException renvoyées par JDBC
      */
-    public int addDiscountCode(String code, float rate) throws SQLException
-    {
+    public int addDiscountCode(String code, float rate) throws SQLException {
         int result = 0;
         String sql = "INSERT INTO DISCOUNT_CODE VALUES (?, ?)";
         try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, code);
             stmt.setFloat(2, rate);
             result = stmt.executeUpdate();
@@ -91,13 +88,11 @@ public class DAO
      * @throws java.sql.SQLException renvoyées par JDBC
      *
      */
-    public int deleteDiscountCode(String code) throws SQLException
-    {
+    public int deleteDiscountCode(String code) throws SQLException {
         int result = 0;
         String sql = "DELETE FROM DISCOUNT_CODE WHERE DISCOUNT_CODE = ?";
         try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, code);
             result = stmt.executeUpdate();
         }
@@ -110,24 +105,20 @@ public class DAO
      * @param customerID la clé du CUSTOMER à rechercher
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public CustomerEntity findCustomer(int customerID) throws DAOException
-    {
+    public CustomerEntity findCustomer(int customerID) throws DAOException {
         CustomerEntity result = new CustomerEntity();
 
         String sql = "SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, customerID);
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                if (rs.next())
-                { // On a trouvé
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) { // On a trouvé
                     String name = rs.getString("NAME");
                     String address = rs.getString("EMAIL");
                     // On crée l'objet "entity"
@@ -136,9 +127,7 @@ public class DAO
                     result.setName(name);
                 } // else on n'a pas trouvé, on renverra null
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -152,24 +141,20 @@ public class DAO
      * @param customerID la clé du CUSTOMER à rechercher
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public ProductEntity findProduct(int productID) throws DAOException
-    {
+    public ProductEntity findProduct(int productID) throws DAOException {
         ProductEntity result = new ProductEntity();
 
         String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, productID);
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                if (rs.next())
-                { // On a trouvé
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) { // On a trouvé
 
                     int productId = rs.getInt("PRODUCT_ID");
                     int manufacturerId = rs.getInt("MANUFACTURER_ID");
@@ -191,34 +176,67 @@ public class DAO
                     result.setQuantity(quantity);
                 } // else on n'a pas trouvé, on renverra null
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
 
         return result;
     }
-    
+
     public int findProductId(String Description) throws SQLException {
-        
+
         int result = 0;
         String sql = "SELECT PRODUCT_ID FROM PRODUCT WHERE DESCRIPTION LIKE ? ";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, Description);
-            ResultSet rs = stmt.executeQuery();                
-                   while (rs.next()) {
-                   result = rs.getInt("PRODUCT_ID");
-                           System.out.println("--------------------------------------------------"+result);
-
-            }                 
-            
-        } 
-
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt("PRODUCT_ID");
+            }
+        }
         return result;
+    }
+    
+    public int findProductCost(String Description) throws SQLException {
+
+        int result = 0;
+        String sql = "SELECT PURCHASE_COST FROM PRODUCT WHERE DESCRIPTION LIKE ? ";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, Description);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt("PURCHASE_COST");
+            }
+        }
+        return result;
+    }
+    
+    public int findProductCostById(int productID) throws SQLException {
+
+        int result = 0;
+        String sql = "SELECT PURCHASE_COST FROM PRODUCT WHERE PRODUCT_ID = ? ";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, productID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt("PURCHASE_COST");
+            }
+        }
+        return result;
+    }
+    
+    public boolean CheckEnoughMoney(int customerMoney, int productCost, int quantity) {
+        if(customerMoney >= (quantity*productCost))
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -227,26 +245,22 @@ public class DAO
      * @param customerID la clé du CUSTOMER dont on veut les commandes
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public List<PurchaseEntity> viewPurshases(int customerID) throws DAOException
-    {
+    public List<PurchaseEntity> viewPurshases(int customerID) throws DAOException {
         ArrayList<PurchaseEntity> purchases = new ArrayList();
 
         float totalCost = 0;
-        
+
         String sql = "SELECT * FROM PURCHASE_ORDER INNER JOIN PRODUCT USING(PRODUCT_ID) WHERE CUSTOMER_ID = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, customerID);
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
 
                     PurchaseEntity result = new PurchaseEntity();
 
@@ -275,9 +289,7 @@ public class DAO
                     purchases.add(result);
                 } // else on n'a pas trouvé, on renverra null
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -291,22 +303,18 @@ public class DAO
      * @param customerID la clé du CUSTOMER dont on veut les commandes
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public List<ProductEntity> allProduct() throws DAOException
-    {
+    public List<ProductEntity> allProduct() throws DAOException {
         ArrayList<ProductEntity> products = new ArrayList();
 
         String sql = "SELECT * FROM PRODUCT ";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
 
                     ProductEntity result = new ProductEntity();
 
@@ -332,9 +340,7 @@ public class DAO
                     products.add(result);
                 } // else on n'a pas trouvé, on renverra null
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -348,20 +354,19 @@ public class DAO
      * @param customerID la clé du CUSTOMER dont on veut les commandes
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
     public int createPurshase(int customerId, int productId, int quantity, float shippingCost, String freightCompany) throws SQLException {
-                
+
         Date date = new Date();
         int result = 0;
         String sql = "INSERT INTO PURCHASE_ORDER VALUES(?,?,?,?,?,?,?,?)";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setInt(1, (int)(Math.random() * 50000));
+            stmt.setInt(1, (int) (Math.random() * 50000));
             stmt.setInt(2, customerId);
             stmt.setInt(3, productId);
             stmt.setInt(4, quantity);
@@ -374,15 +379,12 @@ public class DAO
         }
         return result;
     }
-    
-    
-    public int updatePurchase(int orderNum, int customerId, int productId, int quantity, float shippingCost, String salesDate, String shippingDate, String freightCompany) throws SQLException
-    {
-        int result =0;
+
+    public int updatePurchase(int orderNum, int customerId, int productId, int quantity, float shippingCost, String salesDate, String shippingDate, String freightCompany) throws SQLException {
+        int result = 0;
         String sql = "UPDATE PURCHASE_ORDER SET PRODUCT_ID = ?, QUANTITY=?, SHIPPING_COST=?, SALES_DATE=?, SHIPPING_DATE=?, FREIGHT_COMPANY=? where ORDER_NUM= ? and CUSTOMER_ID=?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, orderNum);
             stmt.setInt(2, customerId);
@@ -396,7 +398,7 @@ public class DAO
 
         }
         return result;
-        
+
     }
 
     /**
@@ -409,13 +411,11 @@ public class DAO
      * @throws java.sql.SQLException renvoyées par JDBC
      *
      */
-    public int deletePurchase(int code) throws SQLException
-    {
+    public int deletePurchase(int code) throws SQLException {
         int result = 0;
         String sql = "DELETE FROM PURCHASE_ORDER WHERE ORDER_NUM = ?";
         try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, code);
             result = stmt.executeUpdate();
         }
@@ -428,32 +428,26 @@ public class DAO
      * @param customerID la clé du CUSTOMER à rechercher
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public float chiffreAffaireEtat(String cate, String dateDeb, String dateFin) throws DAOException
-    {
+    public float chiffreAffaireEtat(String cate, String dateDeb, String dateFin) throws DAOException {
         System.out.println("date Début: " + dateDeb + " Date Fin: " + dateFin);
         float prix = 0;
 
         String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(discount_code) where c.state= ? and  sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cate);
             stmt.setString(2, dateDeb);
             stmt.setString(3, dateFin);
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
                     prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
                 }
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -467,33 +461,27 @@ public class DAO
      * @param customerID la clé du CUSTOMER à rechercher
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public float chiffreAffaireProduit(String categorie, String dateDeb, String dateFin) throws DAOException
-    {
+    public float chiffreAffaireProduit(String categorie, String dateDeb, String dateFin) throws DAOException {
         float prix = 0;
 
         String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) where product_code = ? and sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, categorie);
             stmt.setString(2, dateDeb);
             stmt.setString(3, dateFin);
 
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
                     prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
                 }
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -501,30 +489,24 @@ public class DAO
         return prix;
     }
 
-    public float chiffreAffaireClientDate(int iD, String dateDeb, String dateFin) throws DAOException
-    {
+    public float chiffreAffaireClientDate(int iD, String dateDeb, String dateFin) throws DAOException {
         CustomerEntity result = new CustomerEntity();
         float prix = 0;
 
         String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(discount_code) where c.customer_id = ? and sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, iD);
             stmt.setString(2, dateDeb);
             stmt.setString(3, dateFin);
 
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
                     prix += (rs.getFloat("purchase_cost") - (rs.getFloat("purchase_cost") * rs.getFloat("rate") / 100)) * rs.getInt("quantity") + rs.getFloat("shipping_cost");
                 }
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -532,18 +514,15 @@ public class DAO
         return prix;
     }
 
-    public List<String> productCodes() throws SQLException
-    {
+    public List<String> productCodes() throws SQLException {
 
         List<String> result = new ArrayList<>();
 
         String sql = "SELECT * FROM PRODUCT_CODE";
         try (Connection connection = myDataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 String res = rs.getString("PROD_CODE");
                 result.add(res);
             }
@@ -551,17 +530,13 @@ public class DAO
         return result;
     }
 
-    public List<CustomerEntity> AllCustomers() throws DAOException
-    {
+    public List<CustomerEntity> AllCustomers() throws DAOException {
         List<CustomerEntity> result = new ArrayList();
         String sql = "SELECT * FROM CUSTOMER";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
                     CustomerEntity custo = new CustomerEntity();
                     String name = rs.getString("NAME");
                     String address = rs.getString("EMAIL");
@@ -573,9 +548,7 @@ public class DAO
                     result.add(custo);
                 } // else on n'a pas trouvé, on renverra null
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
@@ -589,34 +562,35 @@ public class DAO
      * @param customerID la clé du CUSTOMER dont on veut les commandes
      *
      * @return l'enregistrement correspondant dans la table CUSTOMER, ou null si
-     *         pas trouvé
+     * pas trouvé
      *
      * @throws DAOException
      */
-    public List<String> allEtats() throws DAOException
-    {
+    public List<String> allEtats() throws DAOException {
         List<String> result = new ArrayList();
         String sql = "SELECT DISTINCT STATE FROM CUSTOMER";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
-                PreparedStatement stmt = connection.prepareStatement(sql))
-        {
-            try (ResultSet rs = stmt.executeQuery())
-            {
-                while (rs.next())
-                { // On a trouvé
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) { // On a trouvé
                     String etat = rs.getString("STATE");
                     result.add(etat);
                 } // else on n'a pas trouvé, on renverra null
             }
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
             throw new DAOException(ex.getMessage());
         }
 
         return result;
     }
+    
+    	/**
+	 * renvoie la liste des descriptions des produits
+	 *
+
+     * @throws model.DAOException
+	 */
 
     public ArrayList<String> GetProductsDescriptions() throws DAOException {
 
@@ -627,7 +601,7 @@ public class DAO
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                String Descritpion = rs.getString("DESCRIPTION");                
+                String Descritpion = rs.getString("DESCRIPTION");
                 DescriptionList.add(Descritpion);
             }
         } catch (SQLException ex) {
@@ -635,7 +609,7 @@ public class DAO
         }
         return DescriptionList;
     }
-    
+
     public ArrayList<String> GetCompanies() throws DAOException {
 
         ArrayList<String> companies = new ArrayList();
@@ -645,7 +619,7 @@ public class DAO
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                String companie = rs.getString("FREIGHT_COMPANY");                
+                String companie = rs.getString("FREIGHT_COMPANY");
                 companies.add(companie);
             }
         } catch (SQLException ex) {
@@ -653,21 +627,56 @@ public class DAO
         }
         return companies;
     }
-    
+
     public int EditPurshase(int orderNum, int quantity, float shippingCost, String freightCompany) throws SQLException {
         int result = 0;
         String sql = "UPDATE PURCHASE_ORDER SET QUANTITY = ?, FREIGHT_COMPANY = ?, SHIPPING_COST = ? WHERE ORDER_NUM = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, quantity);            
+            stmt.setInt(1, quantity);
             stmt.setString(2, freightCompany);
             stmt.setFloat(3, shippingCost);
             stmt.setInt(4, orderNum);
-            System.out.println("-----------------------------------------------------------------------------1");
             result = stmt.executeUpdate();
-            System.out.println("-----------------------------------------------------------------------------2");
         }
-        System.out.println("-----------------------------------------------------------------------------3");
+        return result;
+    }
+
+    public int GetCreditLimit(int customerID) throws SQLException {
+        int result = 0;
+        String sql = "SELECT CREDIT_LIMIT FROM CUSTOMER WHERE CUSTOMER_ID = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, customerID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                result = rs.getInt("CREDIT_LIMIT");
+            }
+        }
+        return result;
+    }
+    
+    public int GiveCredit(int customerID) throws SQLException {
+        int result = 0;
+        String sql = "UPDATE CUSTOMER SET CREDIT_LIMIT = ? WHERE CUSTOMER_ID = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, GetCreditLimit(customerID) + 5000);     
+            stmt.setInt(2, customerID);         
+            result = stmt.executeUpdate();
+        }
+        return result;
+    }
+    
+    public int SetCreditLimit(int customerID, int amount) throws SQLException {
+        int result = 0;
+        String sql = "UPDATE CUSTOMER SET CREDIT_LIMIT = ? WHERE CUSTOMER_ID = ?";
+        try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, GetCreditLimit(customerID) - amount);     
+            stmt.setInt(2, customerID);         
+            result = stmt.executeUpdate();
+        }
         return result;
     }
 }

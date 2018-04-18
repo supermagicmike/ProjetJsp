@@ -42,6 +42,7 @@
         <!-- Un temps volontairement court : 1 minute -->
         <session-timeout>
             1
+            10
         </session-timeout>
     </session-config>
     <welcome-file-list>
