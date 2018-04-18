@@ -23,26 +23,27 @@ import model.DAOException;
  *
  * @author tzanchi
  */
-@WebServlet(name = "CustomerController", urlPatterns =
-{
-    "/CustomerController"
-})
-public class CustomerController extends HttpServlet
-{
+@WebServlet(name = "CustomerController", urlPatterns
+        = {
+            "/CustomerController"
+        })
+public class CustomerController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
      * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      *
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+            throws ServletException, IOException {
         Boolean editer = false;
         String action = request.getParameter("action");
         action = (action == null) ? "" : action; //pour les switch qui n'aiment pas les null
@@ -50,6 +51,7 @@ public class CustomerController extends HttpServlet
         String code_edit;
         try
         {
+        try {
             DAO dao = new DAO();
             request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
             request.setAttribute("Descritpions", dao.GetProductsDescriptions());
@@ -58,6 +60,11 @@ public class CustomerController extends HttpServlet
             request.setAttribute("edit", editer);
             code_edit = code;
 
+            try {
+                request.setAttribute("customer_credit", dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             switch (action)
             {
@@ -65,6 +72,9 @@ public class CustomerController extends HttpServlet
                 {
                     try
                     {
+            switch (action) {
+                case "DELETE": {
+                    try {
                         // Requête de suppression (vient du lien hypertexte)
                         dao.deletePurchase(Integer.valueOf(code));
                         request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id")));
@@ -72,6 +82,7 @@ public class CustomerController extends HttpServlet
 
                     catch (SQLException ex)
                     {
+                    } catch (SQLException ex) {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
@@ -80,6 +91,7 @@ public class CustomerController extends HttpServlet
 
                     try
                     {
+                    try {
                         String Description = request.getParameter("Description");
                         String ShippingCost = request.getParameter("ShippingCost");
                         String Quantity = request.getParameter("Quantity");
@@ -91,6 +103,17 @@ public class CustomerController extends HttpServlet
                     }
                     catch (SQLException ex)
                     {
+                        if(dao.CheckEnoughMoney(dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")), dao.findProductCost(Description), Integer.parseInt(Quantity))) {
+                           dao.createPurshase((Integer) request.getSession().getAttribute("Id"), dao.findProductId(Description), Integer.parseInt(Quantity), Float.parseFloat(ShippingCost), freightCompany);                          
+                           request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id"))); 
+                           dao.SetCreditLimit((Integer) request.getSession().getAttribute("Id"), dao.findProductCost(Description)*Integer.parseInt(Quantity));
+                           try {
+                                request.setAttribute("customer_credit", dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));
+                            } catch (SQLException ex) {
+                                Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    } catch (SQLException ex) {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     break;
@@ -100,16 +123,19 @@ public class CustomerController extends HttpServlet
                     request.setAttribute("edit", editer);
                     break;
                     
+
                 case "ANNUL":
                     editer = false;
                     request.setAttribute("edit", editer);
                     break;
                 
+
                 case "VALIDEDIT":
                     try {
                         String num_edit = request.getParameter("num_edit");
                         editer = false;
                         request.setAttribute("edit", editer);                 
+                        request.setAttribute("edit", editer);
                         String editQuantity = request.getParameter("editQuantity");
                         String editFreightCompany = request.getParameter("editFreightCompany");
                         String editShippingCost = request.getParameter("editShippingCost"); 
@@ -124,16 +150,46 @@ public class CustomerController extends HttpServlet
                     }
                     catch (SQLException ex)
                     {
+                        String editShippingCost = request.getParameter("editShippingCost");
+                        if(dao.CheckEnoughMoney(dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")), dao.findProductCostById(Integer.parseInt(num_edit)), Integer.parseInt(editQuantity))) {
+                           dao.EditPurshase(Integer.parseInt(num_edit), Integer.parseInt(editQuantity), Float.parseFloat(editShippingCost), editFreightCompany);
+                           request.setAttribute("purchases", dao.viewPurshases((Integer) request.getSession().getAttribute("Id"))); 
+                           dao.SetCreditLimit((Integer) request.getSession().getAttribute("Id"), dao.findProductCostById(Integer.parseInt(num_edit))*Integer.parseInt(editQuantity));
+                           try {
+                                request.setAttribute("customer_credit", dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));
+                            } catch (SQLException ex) {
+                                Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        
+                        
+                    } catch (SQLException ex) {
                         Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    break;
+
+                case "REFRESH":
+                    getServletContext().getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
+                    break;
+                    
+                case "CASHTRANSFERT":
+                    try {
+                        dao.GiveCredit((Integer) request.getSession().getAttribute("Id"));
+                        request.setAttribute("customer_credit", dao.GetCreditLimit((Integer) request.getSession().getAttribute("Id")));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }                   
+                    break;
             }
         }
         catch (DAOException ex)
         {
+        } catch (DAOException ex) {
             Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
+        } finally {
 
         }
         //getServletContext().getRequestDispatcher("/WEB-INF/affiche.jsp").forward(request, response);
@@ -144,20 +200,25 @@ public class CustomerController extends HttpServlet
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param request  servlet request
+     *
+     * @param request servlet request
      * @param response servlet response
      *
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -179,6 +240,7 @@ public class CustomerController extends HttpServlet
 
     public String getServletInfo()
     {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
