@@ -436,7 +436,9 @@ public class DAO {
         System.out.println("date Début: " + dateDeb + " Date Fin: " + dateFin);
         float prix = 0;
 
-        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer using(customer_id) where state= ? and  sales_date between ? and ?";
+
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(customer_id) where c.state= ? and  sales_date between ? and ?";
+
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cate);
