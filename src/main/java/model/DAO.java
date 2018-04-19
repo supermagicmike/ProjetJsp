@@ -250,7 +250,7 @@ public class DAO {
 
         float totalCost = 0;
 
-        String sql = "SELECT * FROM PURCHASE_ORDER INNER JOIN PRODUCT USING(PRODUCT_ID) WHERE CUSTOMER_ID = ?";
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(customer_id) where c.customer_id = ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -259,7 +259,8 @@ public class DAO {
                 while (rs.next()) { // On a trouvé
 
                     PurchaseEntity result = new PurchaseEntity();
-
+                    
+                    float rate = rs.getFloat("RATE");
                     int OrderNum = rs.getInt("ORDER_NUM");
                     int CustomerId = rs.getInt("CUSTOMER_ID");
                     int ProductId = rs.getInt("PRODUCT_ID");
@@ -280,7 +281,7 @@ public class DAO {
                     result.setShippingDate(ShippingDate);
                     result.setFreightCompany(FreightCompany);
                     result.setDescription(Description);
-                    totalCost = (ProductCost * Quantity) + ShippingCost;
+                    totalCost = (ProductCost- ProductCost*rate/100)* Quantity + ShippingCost;
                     result.setTotalCost(totalCost);
                     purchases.add(result);
                 } // else on n'a pas trouvé, on renverra null
@@ -432,7 +433,7 @@ public class DAO {
         System.out.println("date Début: " + dateDeb + " Date Fin: " + dateFin);
         float prix = 0;
 
-        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(discount_code) where c.state= ? and  sales_date between ? and ?";
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(customer_id) where c.state= ? and  sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cate);
@@ -489,7 +490,7 @@ public class DAO {
         CustomerEntity result = new CustomerEntity();
         float prix = 0;
 
-        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(discount_code) where c.customer_id = ? and sales_date between ? and ?";
+        String sql = "select * from purchase_order inner join product using (product_id) inner join product_code on (product_code = prod_code) inner join discount_code using (discount_code) inner join customer c using(customer_id) where c.customer_id = ? and sales_date between ? and ?";
         try (Connection connection = myDataSource.getConnection(); // On crée un statement pour exécuter une requête
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
