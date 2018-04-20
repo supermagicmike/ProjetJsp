@@ -46,15 +46,27 @@ public class CustomerEntity {
 		return email;
 	}
 
+        /**	 
+         * @param customerId
+	 */
+        
     public void setCustomerId(int customerId)
     {
         this.customerId = customerId;
     }
 
+        /**	 
+         * @param name
+	 */
+    
     public void setName(String name)
     {
         this.name = name;
     }
+    
+         /**	 
+         * @param email
+	 */
 
     public void setEmail(String email)
     {
