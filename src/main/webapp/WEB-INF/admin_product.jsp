@@ -215,7 +215,7 @@
 
                                 var ctx = document.getElementById("myChart");
                                 var myChart = new Chart(ctx, {
-                                    type: 'line',
+                                    type: 'bar',
                                     data: {
                                         labels: key,
                                         datasets: [{
