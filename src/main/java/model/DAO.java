@@ -179,7 +179,12 @@ public class DAO {
 
         return result;
     }
-
+/**
+ * Retourne l'Id du produit par description
+ * @param Description description du produit
+ * @return id du produit
+ * @throws SQLException 
+ */
     public int findProductId(String Description) throws SQLException {
 
         int result = 0;
@@ -195,7 +200,12 @@ public class DAO {
         }
         return result;
     }
-    
+    /**
+     * retourne le prix d'un produit par description
+     * @param Description description du produit
+     * @return le prix du produit
+     * @throws SQLException 
+     */
     public int findProductCost(String Description) throws SQLException {
 
         int result = 0;
@@ -212,6 +222,13 @@ public class DAO {
         return result;
     }
     
+    
+    /**
+     * retourne le prix d'un produit en fonction de son ID
+     * @param productID id du produit
+     * @return prix du produit
+     * @throws SQLException 
+     */
     public int findProductCostById(int productID) throws SQLException {
 
         int result = 0;
@@ -227,7 +244,13 @@ public class DAO {
         }
         return result;
     }
-    
+    /**
+     * Vérifie si le client a assez de sous pour passer la commande
+     * @param customerMoney limite de crédit du client
+     * @param productCost prix du produit
+     * @param quantity nombre de produits
+     * @return 
+     */
     public boolean CheckEnoughMoney(int customerMoney, int productCost, int quantity) {
         if(customerMoney >= (quantity*productCost))
             return true;
@@ -376,7 +399,19 @@ public class DAO {
         }
         return result;
     }
-
+/**
+ * Modifie la commande
+ * @param orderNum numero de commande
+ * @param customerId Id du client
+ * @param productId id du produit
+ * @param quantity quantité de produit
+ * @param shippingCost frais de port
+ * @param salesDate date de vente
+ * @param shippingDate date de livraison
+ * @param freightCompany compagnie de livraison
+ * @return
+ * @throws SQLException 
+ */
     public int updatePurchase(int orderNum, int customerId, int productId, int quantity, float shippingCost, String salesDate, String shippingDate, String freightCompany) throws SQLException {
         int result = 0;
         String sql = "UPDATE PURCHASE_ORDER SET PRODUCT_ID = ?, QUANTITY=?, SHIPPING_COST=?, SALES_DATE=?, SHIPPING_DATE=?, FREIGHT_COMPANY=? where ORDER_NUM= ? and CUSTOMER_ID=?";
@@ -420,7 +455,7 @@ public class DAO {
     }
 
     /**
-     * Trouver un chiffre affaire par article par date
+     * Trouver un chiffre affaire par etat par date
      *
      * @param customerID la clé du CUSTOMER à rechercher
      *
@@ -488,6 +523,14 @@ public class DAO {
         return prix;
     }
 
+        /**
+         * Renvoie le chiffre d'affaire pour un client entre une date de début et une date de fin
+         * @param iD id du client
+         * @param dateDeb date du debut 
+         * @param dateFin date de fin
+         * @return chiffre d'affaire par client entre deux date
+         * @throws DAOException 
+         */
     public float chiffreAffaireClientDate(int iD, String dateDeb, String dateFin) throws DAOException {
         CustomerEntity result = new CustomerEntity();
         float prix = 0;
@@ -512,7 +555,11 @@ public class DAO {
 
         return prix;
     }
-
+/**
+ * renvoie la liste de tout les codes produits
+ * @return
+ * @throws SQLException 
+ */
     public List<String> productCodes() throws SQLException {
 
         List<String> result = new ArrayList<>();
@@ -528,7 +575,11 @@ public class DAO {
         }
         return result;
     }
-
+/**
+ * Renvoie la liste de tout les clients
+ * @return
+ * @throws DAOException 
+ */
     public List<CustomerEntity> AllCustomers() throws DAOException {
         List<CustomerEntity> result = new ArrayList();
         String sql = "SELECT * FROM CUSTOMER";
@@ -584,12 +635,11 @@ public class DAO {
         return result;
     }
     
-    	/**
-	 * renvoie la liste des descriptions des produits
-	 *
-
-     * @throws model.DAOException
-	 */
+/**
+ * Retourne la liste des descriptions des produits
+ * @return
+ * @throws DAOException 
+ */
 
     public ArrayList<String> GetProductsDescriptions() throws DAOException {
 
@@ -608,6 +658,11 @@ public class DAO {
         }
         return DescriptionList;
     }
+    /**
+     * Retourne la liste des compagnie de livraison
+     * @return
+     * @throws DAOException 
+     */
 
     public ArrayList<String> GetCompanies() throws DAOException {
 
@@ -626,7 +681,15 @@ public class DAO {
         }
         return companies;
     }
-
+/**
+ * Modifie la commande
+ * @param orderNum numero de commande
+ * @param quantity quantité de produit
+ * @param shippingCost frais de port
+ * @param freightCompany compagnie de livraison
+ * @return
+ * @throws SQLException 
+ */
     public int EditPurshase(int orderNum, int quantity, float shippingCost, String freightCompany) throws SQLException {
         int result = 0;
         String sql = "UPDATE PURCHASE_ORDER SET QUANTITY = ?, FREIGHT_COMPANY = ?, SHIPPING_COST = ? WHERE ORDER_NUM = ?";
@@ -640,7 +703,12 @@ public class DAO {
         }
         return result;
     }
-
+/**
+ * Renvoie la limite de crédit du client
+ * @param customerID id du client
+ * @return limite de crédit
+ * @throws SQLException 
+ */
     public int GetCreditLimit(int customerID) throws SQLException {
         int result = 0;
         String sql = "SELECT CREDIT_LIMIT FROM CUSTOMER WHERE CUSTOMER_ID = ?";
@@ -654,7 +722,12 @@ public class DAO {
         }
         return result;
     }
-    
+    /**
+     * Donne 5000 crédits supplémentaires au client
+     * @param customerID id du client
+     * @return 
+     * @throws SQLException 
+     */
     public int GiveCredit(int customerID) throws SQLException {
         int result = 0;
         String sql = "UPDATE CUSTOMER SET CREDIT_LIMIT = ? WHERE CUSTOMER_ID = ?";
@@ -666,7 +739,13 @@ public class DAO {
         }
         return result;
     }
-    
+    /**
+     * modifie la limite de crédit du client
+     * @param customerID id du client
+     * @param amount montant
+     * @return
+     * @throws SQLException 
+     */
     public int SetCreditLimit(int customerID, int amount) throws SQLException {
         int result = 0;
         String sql = "UPDATE CUSTOMER SET CREDIT_LIMIT = ? WHERE CUSTOMER_ID = ?";
